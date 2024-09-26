@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "listen", ">= 0"
   spec.add_dependency "rack", ">= 1", "< 4"
   spec.add_dependency "rake", ">= 10.0", "< 14"
+  spec.add_dependency "rexml", "~> 3.3", ">= 3.3.7"
   spec.add_dependency "xmldsig", ">= 0.6.6"
 
   # Development dependencies have been removed in favor of specifying them in the Gemfile.
