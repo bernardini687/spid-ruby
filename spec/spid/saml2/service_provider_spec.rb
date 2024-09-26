@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Spid::Saml2::ServiceProvider do
-  subject(:service_provider) { described_class.new service_provider_attributes }
+  subject(:service_provider) { described_class.new(**service_provider_attributes) }
 
   let(:service_provider_attributes) do
     {
