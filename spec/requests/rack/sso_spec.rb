@@ -39,10 +39,13 @@ RSpec.describe "Receiving a SSO assertion" do
         { name: "Service 1", fields: [:email] }
       ]
     end
+    Timecop.freeze
+    Timecop.travel("2018-08-04 01:00 +01:00")
   end
 
   after do
     Spid.reset_configuration!
+    Timecop.return
   end
 
   describe "POST /spid/sso" do

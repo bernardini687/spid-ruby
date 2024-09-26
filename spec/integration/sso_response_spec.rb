@@ -42,10 +42,13 @@ RSpec.describe "Validation of Spid::Sso::Response" do
         { name: "Service 1", fields: [:email] }
       ]
     end
+    Timecop.freeze
+    Timecop.travel("2018-08-04 01:00 +01:00")
   end
 
   after do
     Spid.reset_configuration!
+    Timecop.return
   end
 
   it "requires a body" do
