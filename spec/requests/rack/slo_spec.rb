@@ -55,7 +55,7 @@ RSpec.describe "Receiving a SLO assertion" do
     let(:response) do
       request.get(
         path,
-        params: params,
+        params:,
         "rack.session" => rack_session
       )
     end

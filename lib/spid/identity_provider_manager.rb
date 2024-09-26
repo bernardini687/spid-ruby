@@ -8,13 +8,11 @@ module Spid
 
     def identity_providers
       @identity_providers ||=
-        begin
-          Dir.chdir(Spid.configuration.idp_metadata_dir_path) do
-            Dir.glob("*.xml").map do |metadata_filepath|
-              ::Spid::Saml2::IdentityProvider.new(
-                metadata: File.read(File.expand_path(metadata_filepath))
-              )
-            end
+        Dir.chdir(Spid.configuration.idp_metadata_dir_path) do
+          Dir.glob("*.xml").map do |metadata_filepath|
+            ::Spid::Saml2::IdentityProvider.new(
+              metadata: File.read(File.expand_path(metadata_filepath))
+            )
           end
         end
     end

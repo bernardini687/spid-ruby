@@ -35,8 +35,8 @@ module Spid
       end
 
       def escaped_params(params)
-        params.each_with_object({}) do |(key, value), acc|
-          acc[key] = CGI.escape(value)
+        params.transform_values do |value|
+          CGI.escape(value)
         end
       end
 

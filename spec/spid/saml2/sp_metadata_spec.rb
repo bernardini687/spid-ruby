@@ -3,11 +3,11 @@
 require "spec_helper"
 
 RSpec.describe Spid::Saml2::SPMetadata do
-  subject(:sp_metadata) { described_class.new(settings: settings) }
+  subject(:sp_metadata) { described_class.new(settings:) }
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       sp_entity_id: "https://service.provider",
       sp_acs_binding: "acs-binding-method",
       sp_acs_url: "https://service.provider/sso",
@@ -15,7 +15,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
       sp_slo_service_binding: "slo-binding-method",
       signature_method: Spid::RSA_SHA512,
       digest_method: Spid::SHA512,
-      private_key: private_key,
+      private_key:,
       x509_certificate_der: "certificate-der",
       sp_attribute_services: [
         { name: "Service 1", fields: [:email] },
@@ -56,7 +56,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
       end
 
       describe "md:SPSSODescriptor node" do
-        let(:xpath) { super() + "/md:SPSSODescriptor" }
+        let(:xpath) { "#{super()}/md:SPSSODescriptor" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -71,7 +71,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
         end
 
         describe "md:AttributeConsumingService" do
-          let(:xpath) { super() + "/md:AttributeConsumingService" }
+          let(:xpath) { "#{super()}/md:AttributeConsumingService" }
 
           it "contains 2 elements" do
             elements = REXML::XPath.match(xml_document, xpath)
@@ -93,7 +93,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
         end
 
         describe "md:AssertionConsumerService" do
-          let(:xpath) { super() + "/md:AssertionConsumerService" }
+          let(:xpath) { "#{super()}/md:AssertionConsumerService" }
 
           it "exists" do
             expect(node).not_to be_nil
@@ -110,7 +110,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
         end
 
         describe "md:SingleLogoutService" do
-          let(:xpath) { super() + "/md:SingleLogoutService" }
+          let(:xpath) { "#{super()}/md:SingleLogoutService" }
 
           it "exists" do
             expect(node).not_to be_nil
@@ -125,7 +125,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
         end
 
         describe "md:KeyDescriptor node" do
-          let(:xpath) { super() + "/md:KeyDescriptor" }
+          let(:xpath) { "#{super()}/md:KeyDescriptor" }
 
           it "exists" do
             expect(node).not_to be_nil
@@ -134,21 +134,21 @@ RSpec.describe Spid::Saml2::SPMetadata do
           include_examples "has attribute", "use", "signing"
 
           describe "ds:KeyInfo node" do
-            let(:xpath) { super() + "/ds:KeyInfo" }
+            let(:xpath) { "#{super()}/ds:KeyInfo" }
 
             it "exists" do
               expect(node).not_to be_nil
             end
 
             describe "ds:X509Data" do
-              let(:xpath) { super() + "/ds:X509Data" }
+              let(:xpath) { "#{super()}/ds:X509Data" }
 
               it "exists" do
                 expect(node).not_to be_nil
               end
 
               describe "ds:X509Certificate" do
-                let(:xpath) { super() + "/ds:X509Certificate" }
+                let(:xpath) { "#{super()}/ds:X509Certificate" }
 
                 it "exists" do
                   expect(node).not_to be_nil

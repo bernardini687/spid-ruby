@@ -18,8 +18,7 @@ module Spid
       end
 
       class SsoEnv # :nodoc:
-        attr_reader :env
-        attr_reader :request
+        attr_reader :env, :request
 
         def initialize(env)
           @env = env
@@ -75,9 +74,8 @@ module Spid
         end
 
         def relay_state
-          if request_relay_state.nil?
-            return Spid.configuration.default_relay_state_path
-          end
+          return Spid.configuration.default_relay_state_path if request_relay_state.nil?
+
           session["relay_state"][relay_state_param]
         end
 

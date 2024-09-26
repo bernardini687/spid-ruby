@@ -3,11 +3,7 @@
 module Spid
   module Saml2
     class IdpLogoutResponse # :nodoc:
-      attr_reader :document
-      attr_reader :settings
-      attr_reader :uuid
-      attr_reader :issue_instant
-      attr_reader :request_uuid
+      attr_reader :document, :settings, :uuid, :issue_instant, :request_uuid
 
       def initialize(settings:, request_uuid:, uuid: nil)
         @document = REXML::Document.new

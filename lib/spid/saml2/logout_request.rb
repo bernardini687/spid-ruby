@@ -3,12 +3,9 @@
 module Spid
   module Saml2
     class LogoutRequest # :nodoc:
-      attr_reader :settings
-      attr_reader :document
-      attr_reader :session_index
-      attr_reader :issue_instant
+      attr_reader :settings, :document, :session_index, :issue_instant
 
-      def initialize(uuid: nil, settings:, session_index:)
+      def initialize(settings:, session_index:, uuid: nil)
         @settings = settings
         @document = REXML::Document.new
         @session_index = session_index

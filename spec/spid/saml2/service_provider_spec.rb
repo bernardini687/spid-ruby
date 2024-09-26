@@ -7,17 +7,17 @@ RSpec.describe Spid::Saml2::ServiceProvider do
 
   let(:service_provider_attributes) do
     {
-      host: host,
-      acs_path: acs_path,
-      acs_binding: acs_binding,
-      slo_path: slo_path,
-      slo_binding: slo_binding,
-      metadata_path: metadata_path,
-      private_key: private_key,
-      certificate: certificate,
-      digest_method: digest_method,
-      signature_method: signature_method,
-      attribute_services: attribute_services
+      host:,
+      acs_path:,
+      acs_binding:,
+      slo_path:,
+      slo_binding:,
+      metadata_path:,
+      private_key:,
+      certificate:,
+      digest_method:,
+      signature_method:,
+      attribute_services:
     }
   end
 

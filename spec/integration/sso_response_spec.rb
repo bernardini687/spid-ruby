@@ -6,7 +6,7 @@ RSpec.describe "Validation of Spid::Sso::Response" do
   subject(:sso_response) do
     Spid::Sso::Response.new(
       body: spid_response,
-      request_uuid: request_uuid
+      request_uuid:
     )
   end
 

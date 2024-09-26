@@ -5,15 +5,15 @@ require "spec_helper"
 RSpec.describe Spid::Saml2::Settings do
   subject(:settings) do
     described_class.new(
-      authn_context: authn_context,
-      identity_provider: identity_provider,
-      service_provider: service_provider
+      authn_context:,
+      identity_provider:,
+      service_provider:
     )
   end
 
   let(:identity_provider) do
     instance_double(
-      "Spid::Saml2::IdentityProvider",
+      Spid::Saml2::IdentityProvider,
       entity_id: "https://identity.provider",
       sso_target_url: "https://identity.provider/sso",
       slo_target_url: "https://identity.provider/slo"
@@ -22,7 +22,7 @@ RSpec.describe Spid::Saml2::Settings do
 
   let(:service_provider) do
     instance_double(
-      "Spid::Saml2::ServiceProvider",
+      Spid::Saml2::ServiceProvider,
       host: "https://service.provider",
       digest_method: Spid::SHA256,
       signature_method: Spid::RSA_SHA256,

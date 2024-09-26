@@ -59,7 +59,7 @@ RSpec.describe "Receiving a SSO assertion" do
     let(:response) do
       request.post(
         path,
-        params: params,
+        params:,
         "rack.session" => rack_session
       )
     end
@@ -150,11 +150,11 @@ RSpec.describe "Receiving a SSO assertion" do
         a_hash_including(
           "errors" => {
             "destination" =>
-              "Response Destination is 'https://service.provider/spid/sso'" \
-              " but was expected 'https://another-service.provider/spid/sso'",
+              "Response Destination is 'https://service.provider/spid/sso' " \
+              "but was expected 'https://another-service.provider/spid/sso'",
             "audience" =>
-              "Response Audience is 'https://service.provider'" \
-              " but was expected 'https://another-service.provider'"
+              "Response Audience is 'https://service.provider' " \
+              "but was expected 'https://another-service.provider'"
           }
         )
       end

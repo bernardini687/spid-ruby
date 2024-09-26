@@ -3,7 +3,7 @@
 require "spec_helper"
 
 RSpec.describe Spid::Saml2::IdpLogoutRequest do
-  subject(:request) { described_class.new(saml_message: saml_message) }
+  subject(:request) { described_class.new(saml_message:) }
 
   let(:certificate) do
     OpenSSL::X509::Certificate.new(certificate_pem)

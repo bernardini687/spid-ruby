@@ -5,10 +5,7 @@ module Spid
     class Response # :nodoc:
       include Spid::Saml2::Utils
 
-      attr_reader :body
-      attr_reader :session_index
-      attr_reader :request_uuid
-      attr_reader :saml_message
+      attr_reader :body, :session_index, :request_uuid, :saml_message
 
       def initialize(body:, session_index:, request_uuid:)
         @body = body
@@ -31,13 +28,11 @@ module Spid
 
       def validator
         @validator ||=
-          begin
-            Spid::Saml2::LogoutResponseValidator.new(
-              response: saml_response,
-              settings: settings,
-              request_uuid: request_uuid
-            )
-          end
+          Spid::Saml2::LogoutResponseValidator.new(
+            response: saml_response,
+            settings:,
+            request_uuid:
+          )
       end
 
       def identity_provider
@@ -56,14 +51,14 @@ module Spid
 
       def settings
         @settings ||= Spid::Saml2::Settings.new(
-          service_provider: service_provider,
-          identity_provider: identity_provider
+          service_provider:,
+          identity_provider:
         )
       end
 
       def saml_response
         @saml_response ||= Spid::Saml2::LogoutResponse.new(
-          saml_message: saml_message
+          saml_message:
         )
       end
     end

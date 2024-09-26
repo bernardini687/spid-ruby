@@ -7,8 +7,7 @@ module Spid
     class SamlParser # :nodoc:
       include Spid::Saml2::Utils
 
-      attr_reader :saml_message
-      attr_reader :document
+      attr_reader :saml_message, :document
 
       def initialize(saml_message:)
         @saml_message = saml_message

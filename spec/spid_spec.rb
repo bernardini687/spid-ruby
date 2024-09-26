@@ -2,6 +2,6 @@
 
 RSpec.describe Spid do
   it "has a version number" do
-    expect(Spid::VERSION).not_to be nil
+    expect(Spid::VERSION).not_to be_nil
   end
 end

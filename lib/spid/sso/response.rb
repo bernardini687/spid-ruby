@@ -8,9 +8,7 @@ module Spid
     class Response # :nodoc:
       include Spid::Saml2::Utils
 
-      attr_reader :body
-      attr_reader :saml_message
-      attr_reader :request_uuid
+      attr_reader :body, :saml_message, :request_uuid
 
       def initialize(body:, request_uuid:)
         @body = body
@@ -26,8 +24,8 @@ module Spid
         @validator ||=
           Spid::Saml2::ResponseValidator.new(
             response: saml_response,
-            settings: settings,
-            request_uuid: request_uuid
+            settings:,
+            request_uuid:
           )
       end
 
@@ -40,8 +38,8 @@ module Spid
       end
 
       def attributes
-        raw_attributes.each_with_object({}) do |(key, value), acc|
-          acc[normalize_key(key)] = value
+        raw_attributes.transform_keys do |key|
+          normalize_key(key)
         end
       end
 
@@ -64,13 +62,13 @@ module Spid
       end
 
       def saml_response
-        @saml_response ||= Spid::Saml2::Response.new(saml_message: saml_message)
+        @saml_response ||= Spid::Saml2::Response.new(saml_message:)
       end
 
       def settings
         @settings ||= Spid::Saml2::Settings.new(
-          identity_provider: identity_provider,
-          service_provider: service_provider
+          identity_provider:,
+          service_provider:
         )
       end
 

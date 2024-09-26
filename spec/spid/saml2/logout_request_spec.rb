@@ -7,29 +7,29 @@ RSpec.describe Spid::Saml2::LogoutRequest do
     described_class.new(
       uuid: "unique-uuid",
       session_index: "a-session-index",
-      settings: settings
+      settings:
     )
   end
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       idp_entity_id: "https://identity.provider",
       idp_slo_target_url: "https://identity.provider/slo",
       sp_entity_id: "https://service.provider"
     )
   end
 
-  it { is_expected.to be_a described_class }
+  after do
+    Timecop.return
+  end
 
   before do
     Timecop.freeze
     Timecop.travel("2018-08-04 01:00 +01:00")
   end
 
-  after do
-    Timecop.return
-  end
+  it { is_expected.to be_a described_class }
 
   describe "#to_saml" do
     let(:saml_message) { logout_request.to_saml }
@@ -55,7 +55,7 @@ RSpec.describe Spid::Saml2::LogoutRequest do
       end
 
       describe "saml:Issuer" do
-        let(:xpath) { super() + "/saml:Issuer" }
+        let(:xpath) { "#{super()}/saml:Issuer" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -74,13 +74,13 @@ RSpec.describe Spid::Saml2::LogoutRequest do
       end
 
       describe "saml:NameID" do
-        let(:xpath) { super() + "/saml:NameID" }
+        let(:xpath) { "#{super()}/saml:NameID" }
 
         it "exists" do
           expect(node).not_to be_nil
         end
 
-        xit "contains the name identifier value" do
+        it "contains the name identifier value" do
           expect(node.text).to eq "a-name-identifier-value"
         end
 
@@ -93,7 +93,7 @@ RSpec.describe Spid::Saml2::LogoutRequest do
       end
 
       describe "samlp:SessionIndex" do
-        let(:xpath) { super() + "/samlp:SessionIndex" }
+        let(:xpath) { "#{super()}/samlp:SessionIndex" }
 
         it "exists" do
           expect(node).not_to be_nil

@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe "Spid::Slo::Request conforms SPID specification" do
   let(:slo_request) do
-    Spid::Slo::Request.new(idp_name: idp_name, session_index: session_index)
+    Spid::Slo::Request.new(idp_name:, session_index:)
   end
 
   let(:idp_name) { "https://identity.provider" }
@@ -64,7 +64,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
       let(:attributes) { logout_request_node.attributes }
 
       it "exists" do
-        expect(logout_request_node).not_to eq nil
+        expect(logout_request_node).not_to be_nil
       end
 
       it "contains attribute ID" do
@@ -94,7 +94,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
         let(:attributes) { issuer_node.attributes }
 
         it "exists" do
-          expect(issuer_node).not_to eq nil
+          expect(issuer_node).not_to be_nil
         end
 
         it "contains sp_entity_id" do
@@ -123,7 +123,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
         let(:attributes) { name_id_node.attributes }
 
         it "exists" do
-          expect(name_id_node).not_to eq nil
+          expect(name_id_node).not_to be_nil
         end
 
         it "contains attribute Format" do
@@ -146,7 +146,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
         end
 
         it "exists" do
-          expect(session_index_node).not_to eq nil
+          expect(session_index_node).not_to be_nil
         end
 
         it "contains provided session index" do
@@ -162,7 +162,7 @@ RSpec.describe "Spid::Slo::Request conforms SPID specification" do
         end
 
         it "doesn't exist" do
-          expect(signature_node).to eq nil
+          expect(signature_node).to be_nil
         end
       end
     end

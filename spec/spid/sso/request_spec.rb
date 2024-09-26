@@ -5,10 +5,10 @@ require "spec_helper"
 RSpec.describe Spid::Sso::Request do
   subject(:sso_request) do
     described_class.new(
-      idp_name: idp_name,
-      relay_state: relay_state,
-      attribute_index: attribute_index,
-      authn_context: authn_context
+      idp_name:,
+      relay_state:,
+      attribute_index:,
+      authn_context:
     )
   end
 
@@ -24,23 +24,20 @@ RSpec.describe Spid::Sso::Request do
   describe "#url" do
     let(:settings) do
       instance_double(
-        "Spid::Saml2::Settings",
+        Spid::Saml2::Settings,
         idp_sso_target_url: "https://identity.provider/sso"
       )
     end
 
     let(:query_params_signer) do
       instance_double(
-        "Spid::Saml2::Utils::QueryParamsSigner",
+        Spid::Saml2::Utils::QueryParamsSigner,
         escaped_signed_query_string: "params=value"
       )
     end
 
     before do
-      allow(sso_request).
-        to receive(:query_params_signer).and_return(query_params_signer)
-
-      allow(sso_request).to receive(:settings).and_return(settings)
+      allow(sso_request).to receive_messages(query_params_signer:, settings:)
     end
 
     it "returns the sso authentication url for idp" do
@@ -51,9 +48,9 @@ RSpec.describe Spid::Sso::Request do
   describe "#query_params_signer" do
     let(:settings) do
       instance_double(
-        "Spid::Saml2::Settings",
-        signature_method: signature_method,
-        private_key: private_key
+        Spid::Saml2::Settings,
+        signature_method:,
+        private_key:
       )
     end
 
@@ -61,16 +58,15 @@ RSpec.describe Spid::Sso::Request do
 
     let(:expected_params) do
       {
-        saml_message: saml_message,
-        relay_state: relay_state,
-        signature_method: signature_method,
-        private_key: private_key
+        saml_message:,
+        relay_state:,
+        signature_method:,
+        private_key:
       }
     end
 
     before do
-      allow(sso_request).to receive(:saml_message).and_return(saml_message)
-      allow(sso_request).to receive(:settings).and_return(settings)
+      allow(sso_request).to receive_messages(saml_message:, settings:)
 
       allow(Spid::Saml2::Utils::QueryParamsSigner).to receive(:new)
     end
@@ -90,19 +86,16 @@ RSpec.describe Spid::Sso::Request do
 
     let(:expected_params) do
       {
-        service_provider: service_provider,
-        identity_provider: identity_provider,
-        attribute_index: attribute_index,
-        authn_context: authn_context
+        service_provider:,
+        identity_provider:,
+        attribute_index:,
+        authn_context:
       }
     end
 
     before do
       allow(sso_request).
-        to receive(:identity_provider).and_return(identity_provider)
-
-      allow(sso_request).
-        to receive(:service_provider).and_return(service_provider)
+        to receive_messages(identity_provider:, service_provider:)
 
       allow(Spid::Saml2::Settings).to receive(:new)
     end
@@ -130,7 +123,7 @@ RSpec.describe Spid::Sso::Request do
 
       expect(Spid::Saml2::AuthnRequest).
         to have_received(:new).
-        with(settings: settings)
+        with(settings:)
     end
   end
 
@@ -154,8 +147,8 @@ RSpec.describe Spid::Sso::Request do
 
     let(:spid_configuration) do
       instance_double(
-        "Spid::Configuration",
-        service_provider: service_provider
+        Spid::Configuration,
+        service_provider:
       )
     end
 

@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::IdentityProvider do
   subject(:idp_configuration) do
-    described_class.new(metadata: metadata)
+    described_class.new(metadata:)
   end
 
   let(:metadata) do

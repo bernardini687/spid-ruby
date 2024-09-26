@@ -56,12 +56,12 @@ module Spid # :nodoc:
   ].freeze
 
   SIGNATURE_ALGORITHMS = {
-    SHA256 => OpenSSL::Digest::SHA256.new,
-    SHA384 => OpenSSL::Digest::SHA384.new,
-    SHA512 => OpenSSL::Digest::SHA512.new,
-    RSA_SHA256 => OpenSSL::Digest::SHA256.new,
-    RSA_SHA384 => OpenSSL::Digest::SHA384.new,
-    RSA_SHA512 => OpenSSL::Digest::SHA512.new
+    SHA256 => OpenSSL::Digest.new("SHA256"),
+    SHA384 => OpenSSL::Digest.new("SHA384"),
+    SHA512 => OpenSSL::Digest.new("SHA512"),
+    RSA_SHA256 => OpenSSL::Digest.new("SHA256"),
+    RSA_SHA384 => OpenSSL::Digest.new("SHA384"),
+    RSA_SHA512 => OpenSSL::Digest.new("SHA512")
   }.freeze
 
   L1 = "https://www.spid.gov.it/SpidL1"

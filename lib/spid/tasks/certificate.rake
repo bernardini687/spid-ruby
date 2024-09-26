@@ -47,14 +47,10 @@ namespace :spid do
     certificate.serial = 0x0
     certificate.version = 2
 
-    certificate.sign private_key, OpenSSL::Digest::SHA512.new
+    certificate.sign private_key, OpenSSL::Digest.new("SHA512")
 
-    File.open(Spid.configuration.certificate_path, "w") do |f|
-      f.write certificate.to_pem
-    end
+    File.write(Spid.configuration.certificate_path, certificate.to_pem)
 
-    File.open(Spid.configuration.private_key_path, "w") do |f|
-      f.write private_key.to_pem
-    end
+    File.write(Spid.configuration.private_key_path, private_key.to_pem)
   end
 end

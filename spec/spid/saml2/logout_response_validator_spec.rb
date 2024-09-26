@@ -3,17 +3,17 @@
 RSpec.describe Spid::Saml2::LogoutResponseValidator do
   subject(:validator) do
     described_class.new(
-      response: response,
-      settings: settings,
+      response:,
+      settings:,
       request_uuid: ""
     )
   end
 
   let(:response) do
     instance_double(
-      "Spid::Saml2:LogoutResponse",
-      destination: destination,
-      issuer: issuer,
+      Spid::Saml2::LogoutResponse,
+      destination:,
+      issuer:,
       in_response_to: ""
     )
   end
@@ -22,7 +22,7 @@ RSpec.describe Spid::Saml2::LogoutResponseValidator do
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       sp_slo_service_url: "https://service.provider/spid/slo",
       idp_entity_id: "https://identity.provider"
     )

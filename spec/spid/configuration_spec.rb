@@ -13,7 +13,7 @@ RSpec.describe Spid::Configuration do
 
   describe "#hostname" do
     it "has not a default value" do
-      expect(config.hostname).to eq nil
+      expect(config.hostname).to be_nil
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe Spid::Configuration do
 
   describe "#logging_enabled" do
     it "has a default value" do
-      expect(config.logging_enabled).to eq false
+      expect(config.logging_enabled).to be false
     end
   end
 
@@ -73,13 +73,13 @@ RSpec.describe Spid::Configuration do
 
   describe "#private_key" do
     it "has not a default value" do
-      expect(config.private_key).to eq nil
+      expect(config.private_key).to be_nil
     end
   end
 
   describe "#certificate" do
     it "has a default value" do
-      expect(config.certificate).to eq nil
+      expect(config.certificate).to be_nil
     end
   end
 

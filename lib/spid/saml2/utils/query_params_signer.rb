@@ -8,17 +8,14 @@ module Spid
       class QueryParamsSigner # :nodoc:
         include Spid::Saml2::Utils
 
-        attr_reader :saml_message
-        attr_reader :private_key
-        attr_reader :signature_method
-        attr_reader :relay_state
+        attr_reader :saml_message, :private_key, :signature_method, :relay_state
 
         def initialize(
-              saml_message:,
-              private_key:,
-              signature_method:,
-              relay_state: nil
-            )
+          saml_message:,
+          private_key:,
+          signature_method:,
+          relay_state: nil
+        )
           @saml_message = saml_message.delete("\n")
           @private_key = private_key
           @signature_method = signature_method
@@ -31,9 +28,7 @@ module Spid
 
         def signature
           @signature ||=
-            begin
-              encode(raw_signature)
-            end
+            encode(raw_signature)
         end
 
         def signed_query_params
@@ -49,12 +44,10 @@ module Spid
 
         def raw_signature
           @raw_signature ||=
-            begin
-              private_key.sign(
-                signature_algorithm,
-                escaped_query_string(params_for_signature)
-              )
-            end
+            private_key.sign(
+              signature_algorithm,
+              escaped_query_string(params_for_signature)
+            )
         end
 
         def params_for_signature

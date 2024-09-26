@@ -46,13 +46,11 @@ module Spid
 
         def responser
           @responser ||=
-            begin
-              Spid::Slo::Request.new(
-                idp_name: idp_name,
-                relay_state: relay_state_id,
-                session_index: spid_session["session_index"]
-              )
-            end
+            Spid::Slo::Request.new(
+              idp_name:,
+              relay_state: relay_state_id,
+              session_index: spid_session["session_index"]
+            )
         end
 
         def valid_request?

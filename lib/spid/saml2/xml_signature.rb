@@ -3,8 +3,7 @@
 module Spid
   module Saml2
     class XmlSignature # :nodoc:
-      attr_reader :settings
-      attr_reader :sign_reference
+      attr_reader :settings, :sign_reference
 
       def initialize(settings:, sign_reference:)
         @settings = settings

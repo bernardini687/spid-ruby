@@ -4,23 +4,9 @@ require "logger"
 
 module Spid
   class Configuration # :nodoc:
-    attr_accessor :idp_metadata_dir_path
-    attr_accessor :hostname
-    attr_accessor :metadata_path
-    attr_accessor :login_path
-    attr_accessor :logout_path
-    attr_accessor :acs_path
-    attr_accessor :slo_path
-    attr_accessor :digest_method
-    attr_accessor :signature_method
-    attr_accessor :default_relay_state_path
-    attr_accessor :acs_binding
-    attr_accessor :slo_binding
-    attr_accessor :attribute_services
-    attr_accessor :private_key_pem
-    attr_accessor :certificate_pem
-    attr_accessor :logging_enabled
-    attr_accessor :logger
+    attr_accessor :acs_binding, :acs_path, :attribute_services, :certificate_pem, :default_relay_state_path,
+                  :digest_method, :hostname, :idp_metadata_dir_path, :logger, :logging_enabled, :login_path,
+                  :logout_path, :metadata_path, :private_key_pem, :signature_method, :slo_binding, :slo_path
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
@@ -60,25 +46,25 @@ module Spid
 
     def certificate
       return nil if certificate_pem.nil?
+
       @certificate ||= OpenSSL::X509::Certificate.new(certificate_pem)
     end
 
     def private_key
       return nil if private_key_pem.nil?
+
       @private_key ||= OpenSSL::PKey::RSA.new(private_key_pem)
     end
 
     def service_provider
       @service_provider ||=
-        begin
-          Spid::Saml2::ServiceProvider.new(
-            acs_binding: acs_binding, acs_path: acs_path, slo_path: slo_path,
-            slo_binding: slo_binding, metadata_path: metadata_path,
-            private_key: private_key, certificate: certificate,
-            digest_method: digest_method, signature_method: signature_method,
-            attribute_services: attribute_services, host: hostname
-          )
-        end
+        Spid::Saml2::ServiceProvider.new(
+          acs_binding:, acs_path:, slo_path:,
+          slo_binding:, metadata_path:,
+          private_key:, certificate:,
+          digest_method:, signature_method:,
+          attribute_services:, host: hostname
+        )
     end
   end
 end

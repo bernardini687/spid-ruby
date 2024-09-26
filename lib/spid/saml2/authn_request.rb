@@ -5,10 +5,9 @@ require "rexml/document"
 module Spid
   module Saml2
     class AuthnRequest # :nodoc:
-      attr_reader :document
-      attr_reader :settings
+      attr_reader :document, :settings
 
-      def initialize(uuid: nil, settings:)
+      def initialize(settings:, uuid: nil)
         @document = REXML::Document.new
         @uuid = uuid
         @settings = settings

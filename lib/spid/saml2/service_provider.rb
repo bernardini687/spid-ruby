@@ -5,33 +5,24 @@ require "uri"
 module Spid
   module Saml2
     class ServiceProvider # :nodoc:
-      attr_reader :host
-      attr_reader :acs_path
-      attr_reader :acs_binding
-      attr_reader :slo_path
-      attr_reader :slo_binding
-      attr_reader :metadata_path
-      attr_reader :private_key
-      attr_reader :certificate
-      attr_reader :digest_method
-      attr_reader :signature_method
-      attr_reader :attribute_services
+      attr_reader :host, :acs_path, :acs_binding, :slo_path, :slo_binding, :metadata_path, :private_key, :certificate,
+                  :digest_method, :signature_method, :attribute_services
 
       # rubocop:disable Metrics/ParameterLists
       # rubocop:disable Metrics/MethodLength
       def initialize(
-            host:,
-            acs_path:,
-            acs_binding:,
-            slo_path:,
-            slo_binding:,
-            metadata_path:,
-            private_key:,
-            certificate:,
-            digest_method:,
-            signature_method:,
-            attribute_services:
-          )
+        host:,
+        acs_path:,
+        acs_binding:,
+        slo_path:,
+        slo_binding:,
+        metadata_path:,
+        private_key:,
+        certificate:,
+        digest_method:,
+        signature_method:,
+        attribute_services:
+      )
         @host = host
         @acs_path               = acs_path
         @acs_binding            = acs_binding
@@ -71,14 +62,15 @@ module Spid
                 "Provide at least one attribute service"
         elsif attribute_services.any? { |as| !validate_attribute_service(as) }
           raise UnknownAttributeFieldError,
-                "Provided attribute in services are not valid:" \
-                " use only fields in #{ATTRIBUTES.join(', ')}"
+                "Provided attribute in services are not valid: " \
+                "use only fields in #{ATTRIBUTES.join(', ')}"
         end
       end
 
       def validate_attribute_service(attribute_service)
         return false unless attribute_service.key?(:name)
         return false unless attribute_service.key?(:fields)
+
         not_valid_fields = attribute_service[:fields].map(&:to_sym) - ATTRIBUTES
         not_valid_fields.empty?
       end
@@ -86,24 +78,26 @@ module Spid
       def validate_digest_methods
         if !DIGEST_METHODS.include?(digest_method)
           raise UnknownDigestMethodError,
-                "Provided digest method is not valid:" \
-                " use one of #{DIGEST_METHODS.join(', ')}"
+                "Provided digest method is not valid: " \
+                "use one of #{DIGEST_METHODS.join(', ')}"
         elsif !SIGNATURE_METHODS.include?(signature_method)
           raise UnknownSignatureMethodError,
-                "Provided digest method is not valid:" \
-                " use one of #{SIGNATURE_METHODS.join(', ')}"
+                "Provided digest method is not valid: " \
+                "use one of #{SIGNATURE_METHODS.join(', ')}"
         end
       end
 
       def validate_private_key
         return true if private_key.n.num_bits >= 1024
+
         raise PrivateKeyTooShortError,
-              "Private key is too short: provide at least a " \
-              " private key with 1024 bits"
+              "Private key is too short: provide at least a  " \
+              "private key with 1024 bits"
       end
 
       def validate_certificate
         return true if certificate.verify(private_key)
+
         raise CertificateNotBelongsToPKeyError,
               "Provided a certificate signed with current private key"
       end

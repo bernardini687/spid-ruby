@@ -9,13 +9,13 @@ RSpec.describe Spid::SynchronizeIdpMetadata do
     "/tmp/idp_metadata"
   end
 
-  it { is_expected.to be_a described_class }
-
   before do
     Spid.configure do |config|
       config.idp_metadata_dir_path = metadata_dir_path
     end
   end
+
+  it { is_expected.to be_a described_class }
 
   describe "#idp_list" do
     let(:expected_list) do
@@ -39,7 +39,7 @@ RSpec.describe Spid::SynchronizeIdpMetadata do
       )
     end
 
-    it "returns the idp list of metadata urls", vcr: true do
+    it "returns the idp list of metadata urls", :vcr do
       expect(command.idp_list).to match expected_list
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe Spid::SynchronizeIdpMetadata do
       ]
     end
 
-    it "save in metadata dir path all metadatas", vcr: true do
+    it "save in metadata dir path all metadatas", :vcr do
       command.call
       expect(metadatas).to match_array expected_metadata
     end

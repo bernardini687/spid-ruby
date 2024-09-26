@@ -42,7 +42,7 @@ RSpec.describe Spid::IdentityProviderManager do
       let(:entity_id) { "https://another-identity.provider" }
 
       it "returns nil" do
-        expect(idp).to eq nil
+        expect(idp).to be_nil
       end
     end
   end

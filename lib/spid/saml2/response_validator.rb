@@ -4,12 +4,8 @@ require "xmldsig"
 
 module Spid
   module Saml2
-    # rubocop:disable Metrics/ClassLength
     class ResponseValidator # :nodoc:
-      attr_reader :response
-      attr_reader :settings
-      attr_reader :errors
-      attr_reader :request_uuid
+      attr_reader :response, :settings, :errors, :request_uuid
 
       def initialize(response:, settings:, request_uuid:)
         @response = response
@@ -20,6 +16,7 @@ module Spid
 
       def call
         return false unless success?
+
         [
           matches_request_uuid, issuer, assertion_issuer, certificate,
           destination, conditions, audience, signature
@@ -50,8 +47,8 @@ module Spid
 
         @errors["issuer"] =
           begin
-            "Response Issuer is '#{response.issuer}'" \
-            " but was expected '#{settings.idp_entity_id}'"
+            "Response Issuer is '#{response.issuer}' " \
+            "but was expected '#{settings.idp_entity_id}'"
           end
         false
       end
@@ -61,16 +58,14 @@ module Spid
 
         @errors["assertion_issuer"] =
           begin
-            "Response Assertion Issuer is '#{response.assertion_issuer}'" \
-            " but was expected '#{settings.idp_entity_id}'"
+            "Response Assertion Issuer is '#{response.assertion_issuer}' " \
+            "but was expected '#{settings.idp_entity_id}'"
           end
         false
       end
 
       def certificate
-        if response.certificate.to_der == settings.idp_certificate.to_der
-          return true
-        end
+        return true if response.certificate.to_der == settings.idp_certificate.to_der
 
         @errors["certificate"] = "Certificates mismatch"
         false
@@ -82,8 +77,8 @@ module Spid
 
         @errors["destination"] =
           begin
-            "Response Destination is '#{response.destination}'" \
-            " but was expected '#{settings.sp_acs_url}'"
+            "Response Destination is '#{response.destination}' " \
+            "but was expected '#{settings.sp_acs_url}'"
           end
         false
       end
@@ -103,10 +98,11 @@ module Spid
 
       def audience
         return true if response.audience == settings.sp_entity_id
+
         @errors["audience"] =
           begin
-            "Response Audience is '#{response.audience}'" \
-            " but was expected '#{settings.sp_entity_id}'"
+            "Response Audience is '#{response.audience}' " \
+            "but was expected '#{settings.sp_entity_id}'"
           end
         false
       end
@@ -120,19 +116,18 @@ module Spid
       end
 
       def subject_recipient
-        return true if response.subject_recipient == settings.sp_acs_url
+        true if response.subject_recipient == settings.sp_acs_url
       end
 
       def subject_in_response_to
-        return true if response.subject_in_response_to == request_uuid
+        true if response.subject_in_response_to == request_uuid
       end
 
       def subject_not_on_or_after
         time = Time.now.utc.iso8601
 
-        return true if response.subject_not_on_or_after > time
+        true if response.subject_not_on_or_after > time
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end

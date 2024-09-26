@@ -4,7 +4,8 @@ AllCops:
   Exclude:
     - bin/stubs/*
     - lib/spid/saml2/idp_metadata_parser.rb
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 3.3
+  NewCops: enable
 
 Layout/DotPosition:
   EnforcedStyle: trailing
@@ -20,7 +21,11 @@ RSpec/DescribeClass:
   Exclude:
     - spec/integration/**/*.rb
     - spec/requests/**/*.rb
-RSpec/FilePath:
+RSpec/SpecFilePathFormat:
+  Exclude:
+    - spec/integration/**/*.rb
+    - spec/requests/**/*.rb
+RSpec/SpecFilePathSuffix:
   Exclude:
     - spec/integration/**/*.rb
     - spec/requests/**/*.rb
@@ -36,3 +41,5 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/WordArray:
   EnforcedStyle: brackets
+RSpec/MultipleMemoizedHelpers:
+  Max: 20

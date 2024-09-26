@@ -2,7 +2,7 @@
 
 RSpec.describe Spid::Saml2::IdpLogoutRequestValidator do
   subject(:validator) do
-    described_class.new(request: request)
+    described_class.new(request:)
   end
 
   let(:request) { nil }

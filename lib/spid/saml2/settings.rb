@@ -5,23 +5,20 @@ require "base64"
 module Spid
   module Saml2
     class Settings # :nodoc:
-      attr_reader :identity_provider
-      attr_reader :service_provider
-      attr_reader :authn_context
-      attr_reader :attribute_index
+      attr_reader :identity_provider, :service_provider, :authn_context, :attribute_index
 
       def initialize(
-            identity_provider:,
-            service_provider:,
-            attribute_index: nil,
-            authn_context: nil
-          )
+        identity_provider:,
+        service_provider:,
+        attribute_index: nil,
+        authn_context: nil
+      )
         @authn_context = authn_context || Spid::L1
         @attribute_index = attribute_index
         unless AUTHN_CONTEXTS.include?(@authn_context)
           raise Spid::UnknownAuthnContextError,
-                "Provided authn_context '#{@authn_context}' is not valid:" \
-                " use one of #{AUTHN_CONTEXTS.join(', ')}"
+                "Provided authn_context '#{@authn_context}' is not valid: " \
+                "use one of #{AUTHN_CONTEXTS.join(', ')}"
         end
 
         @identity_provider = identity_provider
@@ -94,9 +91,7 @@ module Spid
 
       def x509_certificate_der
         @x509_certificate_der ||=
-          begin
-            Base64.encode64(certificate.to_der).delete("\n")
-          end
+          Base64.encode64(certificate.to_der).delete("\n")
       end
     end
   end

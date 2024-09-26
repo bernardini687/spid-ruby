@@ -5,9 +5,9 @@ require "spec_helper"
 RSpec.describe Spid::Slo::Request do
   subject(:slo_request) do
     described_class.new(
-      idp_name: idp_name,
-      session_index: session_index,
-      relay_state: relay_state
+      idp_name:,
+      session_index:,
+      relay_state:
     )
   end
 
@@ -22,23 +22,20 @@ RSpec.describe Spid::Slo::Request do
   describe "#url" do
     let(:settings) do
       instance_double(
-        "Spid::Saml2::Settings",
+        Spid::Saml2::Settings,
         idp_slo_target_url: "https://identity.provider/slo"
       )
     end
 
     let(:query_params_signer) do
       instance_double(
-        "Spid::Saml2::Utils::QueryParamsSigner",
+        Spid::Saml2::Utils::QueryParamsSigner,
         escaped_signed_query_string: "params=value"
       )
     end
 
     before do
-      allow(slo_request).
-        to receive(:query_params_signer).and_return(query_params_signer)
-
-      allow(slo_request).to receive(:settings).and_return(settings)
+      allow(slo_request).to receive_messages(query_params_signer:, settings:)
     end
 
     it "returns the slo authentication url for idp" do
@@ -49,9 +46,9 @@ RSpec.describe Spid::Slo::Request do
   describe "#query_params_signer" do
     let(:settings) do
       instance_double(
-        "Spid::Saml2::Settings",
-        signature_method: signature_method,
-        private_key: private_key
+        Spid::Saml2::Settings,
+        signature_method:,
+        private_key:
       )
     end
 
@@ -59,16 +56,15 @@ RSpec.describe Spid::Slo::Request do
 
     let(:expected_params) do
       {
-        saml_message: saml_message,
-        relay_state: relay_state,
-        signature_method: signature_method,
-        private_key: private_key
+        saml_message:,
+        relay_state:,
+        signature_method:,
+        private_key:
       }
     end
 
     before do
-      allow(slo_request).to receive(:saml_message).and_return(saml_message)
-      allow(slo_request).to receive(:settings).and_return(settings)
+      allow(slo_request).to receive_messages(saml_message:, settings:)
 
       allow(Spid::Saml2::Utils::QueryParamsSigner).to receive(:new)
     end
@@ -88,17 +84,14 @@ RSpec.describe Spid::Slo::Request do
 
     let(:expected_params) do
       {
-        service_provider: service_provider,
-        identity_provider: identity_provider
+        service_provider:,
+        identity_provider:
       }
     end
 
     before do
       allow(slo_request).
-        to receive(:identity_provider).and_return(identity_provider)
-
-      allow(slo_request).
-        to receive(:service_provider).and_return(service_provider)
+        to receive_messages(identity_provider:, service_provider:)
 
       allow(Spid::Saml2::Settings).to receive(:new)
     end
@@ -117,8 +110,7 @@ RSpec.describe Spid::Slo::Request do
     let(:session_index) { "a-session-index" }
 
     before do
-      allow(slo_request).to receive(:settings).and_return(settings)
-      allow(slo_request).to receive(:session_index).and_return(session_index)
+      allow(slo_request).to receive_messages(settings:, session_index:)
 
       allow(Spid::Saml2::LogoutRequest).to receive(:new)
     end
@@ -128,17 +120,17 @@ RSpec.describe Spid::Slo::Request do
 
       expect(Spid::Saml2::LogoutRequest).
         to have_received(:new).
-        with(settings: settings, session_index: session_index)
+        with(settings:, session_index:)
     end
   end
 
   describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
+    let(:service_provider) { instance_double(Spid::Saml2::ServiceProvider) }
 
     let(:spid_configuration) do
       instance_double(
-        "Spid::Configuration",
-        service_provider: service_provider
+        Spid::Configuration,
+        service_provider:
       )
     end
 
@@ -152,7 +144,7 @@ RSpec.describe Spid::Slo::Request do
   end
 
   describe "#identity_provider" do
-    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
+    let(:identity_provider) { instance_double(Spid::Saml2::IdentityProvider) }
 
     before do
       allow(Spid::IdentityProviderManager).

@@ -6,8 +6,7 @@ module Spid
   module Saml2
     # rubocop:disable Metrics/ClassLength
     class SPMetadata # :nodoc:
-      attr_reader :document
-      attr_reader :settings
+      attr_reader :document, :settings
 
       def initialize(settings:)
         @document = REXML::Document.new
@@ -73,7 +72,7 @@ module Spid
 
       def signature
         @signature ||= ::Spid::Saml2::XmlSignature.new(
-          settings: settings,
+          settings:,
           sign_reference: entity_descriptor_id
         ).signature
       end
@@ -156,9 +155,7 @@ module Spid
 
       def entity_descriptor_id
         @entity_descriptor_id ||=
-          begin
-            "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}"
-          end
+          "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}"
       end
     end
     # rubocop:enable Metrics/ClassLength

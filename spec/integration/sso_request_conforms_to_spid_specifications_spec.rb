@@ -5,10 +5,10 @@ require "spec_helper"
 RSpec.describe "Spid::Sso::Request conforms SPID specification" do
   let(:sso_request) do
     Spid::Sso::Request.new(
-      idp_name: idp_name,
-      relay_state: relay_state,
-      attribute_index: attribute_index,
-      authn_context: authn_context
+      idp_name:,
+      relay_state:,
+      attribute_index:,
+      authn_context:
     )
   end
 
@@ -71,7 +71,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
       let(:attributes) { authn_request_node.attributes }
 
       it "exists" do
-        expect(authn_request_node).not_to eq nil
+        expect(authn_request_node).not_to be_nil
       end
 
       it "contains attribute ID" do
@@ -99,7 +99,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         end
 
         it "doesn't exists" do
-          expect(signature_node).to eq nil
+          expect(signature_node).to be_nil
         end
       end
 
@@ -120,7 +120,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
             let(:authn_context) { authn_context_value }
 
             it "exists" do
-              expect(attribute).not_to eq nil
+              expect(attribute).not_to be_nil
             end
           end
         end
@@ -143,7 +143,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { issuer_node.attributes }
 
         it "exists" do
-          expect(issuer_node).not_to eq nil
+          expect(issuer_node).not_to be_nil
         end
 
         it "contains sp_entity_id" do
@@ -172,12 +172,12 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { name_id_policy_node.attributes }
 
         it "exists" do
-          expect(name_id_policy_node).not_to eq nil
+          expect(name_id_policy_node).not_to be_nil
         end
 
         it "doesn't contain the AllowCreate attribute" do
           attribute = attributes["AllowCreate"]
-          expect(attribute).to eq nil
+          expect(attribute).to be_nil
         end
 
         it "contains attribute Format" do
@@ -207,7 +207,7 @@ RSpec.describe "Spid::Sso::Request conforms SPID specification" do
         let(:attributes) { requested_authn_context.attributes }
 
         it "exists" do
-          expect(requested_authn_context).not_to eq nil
+          expect(requested_authn_context).not_to be_nil
         end
 
         describe "AuthnContextClassRef node" do

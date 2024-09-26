@@ -5,12 +5,12 @@ module Spid
     attr_reader :sp_metadata
 
     def initialize
-      @sp_metadata = Spid::Saml2::SPMetadata.new(settings: settings)
+      @sp_metadata = Spid::Saml2::SPMetadata.new(settings:)
     end
 
     def settings
       @settings ||= Spid::Saml2::Settings.new(
-        service_provider: service_provider,
+        service_provider:,
         identity_provider: nil
       )
     end

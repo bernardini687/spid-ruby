@@ -59,7 +59,7 @@ RSpec.describe "Using the Spid::Rack::Login middleware" do
     let(:response) do
       request.get(
         path,
-        params: { idp_name: idp_name },
+        params: { idp_name: },
         "rack.session" => {
           "spid" => spid_session
         }

@@ -6,13 +6,13 @@ RSpec.describe Spid::Saml2::AuthnRequest do
   subject(:authn_request) do
     described_class.new(
       uuid: "_unique-uuid",
-      settings: settings
+      settings:
     )
   end
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       idp_entity_id: "https://identity.provider",
       idp_sso_target_url: "https://identity.provider/sso",
       sp_entity_id: "https://service.provider",
@@ -25,16 +25,16 @@ RSpec.describe Spid::Saml2::AuthnRequest do
 
   let(:force_authn?) { false }
 
-  it { is_expected.to be_a described_class }
+  after do
+    Timecop.return
+  end
 
   before do
     Timecop.freeze
     Timecop.travel("2018-08-04 01:00 +01:00")
   end
 
-  after do
-    Timecop.return
-  end
+  it { is_expected.to be_a described_class }
 
   describe "#to_saml" do
     let(:saml_message) { authn_request.to_saml }
@@ -66,7 +66,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       include_examples "hasn't attribute", "isPassive"
 
       describe "samlp:NameIDPolicy" do
-        let(:xpath) { super() + "/samlp:NameIDPolicy" }
+        let(:xpath) { "#{super()}/samlp:NameIDPolicy" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -80,7 +80,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       end
 
       describe "saml:Issuer element" do
-        let(:xpath) { super() + "/saml:Issuer" }
+        let(:xpath) { "#{super()}/saml:Issuer" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -99,7 +99,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
       end
 
       describe "samlp:RequestedAuthnContext element" do
-        let(:xpath) { super() + "/samlp:RequestedAuthnContext" }
+        let(:xpath) { "#{super()}/samlp:RequestedAuthnContext" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -110,7 +110,7 @@ RSpec.describe Spid::Saml2::AuthnRequest do
                          Spid::MINIMUM_COMPARISON.to_s
 
         describe "saml:AuthnContextClassRef element" do
-          let(:xpath) { super() + "/saml:AuthnContextClassRef" }
+          let(:xpath) { "#{super()}/saml:AuthnContextClassRef" }
 
           it "exists" do
             expect(node).not_to be_nil

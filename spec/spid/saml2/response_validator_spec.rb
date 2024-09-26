@@ -3,29 +3,29 @@
 RSpec.describe Spid::Saml2::ResponseValidator do
   subject(:validator) do
     described_class.new(
-      response: response,
-      settings: settings,
-      request_uuid: request_uuid
+      response:,
+      settings:,
+      request_uuid:
     )
   end
 
   let(:response) do
     instance_double(
-      "Spid::Saml2::Response",
-      issuer: issuer,
-      assertion_issuer: assertion_issuer,
-      destination: destination,
+      Spid::Saml2::Response,
+      issuer:,
+      assertion_issuer:,
+      destination:,
       conditions_not_before: "2018-01-01T00:00:00Z",
       conditions_not_on_or_after: "2018-02-01T00:00:00Z",
       saml_message: signed_response,
       certificate: response_certificate,
-      status_code: status_code,
-      status_message: status_message,
-      status_detail: status_detail,
-      audience: audience,
-      in_response_to: in_response_to,
-      subject_recipient: subject_recipient,
-      subject_in_response_to: subject_in_response_to,
+      status_code:,
+      status_message:,
+      status_detail:,
+      audience:,
+      in_response_to:,
+      subject_recipient:,
+      subject_in_response_to:,
       subject_not_on_or_after: "2018-02-01T00:00:00Z"
     )
   end
@@ -51,11 +51,11 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       idp_entity_id: "https://identity.provider",
       sp_entity_id: "https://service.provider",
       sp_acs_url: "https://service.provider/spid/sso",
-      idp_certificate: idp_certificate
+      idp_certificate:
     )
   end
 
@@ -80,15 +80,15 @@ RSpec.describe Spid::Saml2::ResponseValidator do
 
   let(:subject_in_response_to) { "a-request-uuid" }
 
-  it { is_expected.to be_a described_class }
+  after do
+    Timecop.return
+  end
 
   before do
     Timecop.freeze(local_time)
   end
 
-  after do
-    Timecop.return
-  end
+  it { is_expected.to be_a described_class }
 
   describe "#call" do
     context "when all validation pass" do

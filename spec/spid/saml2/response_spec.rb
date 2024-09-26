@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Spid::Saml2::Response do
   subject(:response) do
-    described_class.new(saml_message: saml_message)
+    described_class.new(saml_message:)
   end
 
   let(:saml_message) do

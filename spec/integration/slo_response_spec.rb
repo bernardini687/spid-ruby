@@ -6,8 +6,8 @@ RSpec.describe "Validation of Spid::Slo::Response" do
   subject(:slo_response) do
     Spid::Slo::Response.new(
       body: spid_response,
-      session_index: session_index,
-      request_uuid: request_uuid
+      session_index:,
+      request_uuid:
     )
   end
 
@@ -72,7 +72,7 @@ RSpec.describe "Validation of Spid::Slo::Response" do
 
     it { is_expected.not_to be_valid }
 
-    pending "#errors" do
+    describe "#errors" do
       it "contains an error" do
         slo_response.valid?
 

@@ -48,14 +48,12 @@ module Spid
 
         def responser
           @responser ||=
-            begin
-              Spid::Sso::Request.new(
-                idp_name: idp_name,
-                relay_state: relay_state_id,
-                attribute_index: attribute_consuming_service_index,
-                authn_context: authn_context
-              )
-            end
+            Spid::Sso::Request.new(
+              idp_name:,
+              relay_state: relay_state_id,
+              attribute_index: attribute_consuming_service_index,
+              authn_context:
+            )
         end
 
         def valid_request?

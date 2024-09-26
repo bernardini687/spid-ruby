@@ -7,7 +7,7 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
     described_class.new(
       uuid: "unique-uuid",
       request_uuid: "request-uuid",
-      settings: settings
+      settings:
     )
   end
 
@@ -15,22 +15,22 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
 
   let(:settings) do
     instance_double(
-      "Spid::Saml2::Settings",
+      Spid::Saml2::Settings,
       sp_entity_id: "https://service.provider",
       idp_slo_target_url: "https://identity.provider/slo"
     )
   end
 
-  it { is_expected.to be_a described_class }
+  after do
+    Timecop.return
+  end
 
   before do
     Timecop.freeze
     Timecop.travel("2018-08-04 01:00 +01:00")
   end
 
-  after do
-    Timecop.return
-  end
+  it { is_expected.to be_a described_class }
 
   describe "#to_saml" do
     let(:saml_message) { response.to_saml }
@@ -56,7 +56,7 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
       end
 
       describe "saml:Issuer" do
-        let(:xpath) { super() + "/saml:Issuer" }
+        let(:xpath) { "#{super()}/saml:Issuer" }
 
         it "exists" do
           expect(node).not_to be_nil
@@ -64,14 +64,14 @@ RSpec.describe Spid::Saml2::IdpLogoutResponse do
       end
 
       describe "saml:Status" do
-        let(:xpath) { super() + "/saml:Status" }
+        let(:xpath) { "#{super()}/saml:Status" }
 
         it "exists" do
           expect(node).not_to be_nil
         end
 
         describe "saml:StatusCode" do
-          let(:xpath) { super() + "/saml:StatusCode" }
+          let(:xpath) { "#{super()}/saml:StatusCode" }
 
           it "exists" do
             expect(node).not_to be_nil

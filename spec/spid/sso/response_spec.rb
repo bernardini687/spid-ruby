@@ -6,7 +6,7 @@ RSpec.describe Spid::Sso::Response do
   subject(:sso_response) do
     described_class.new(
       body: response_body,
-      request_uuid: request_uuid
+      request_uuid:
     )
   end
 
@@ -14,12 +14,12 @@ RSpec.describe Spid::Sso::Response do
   let(:request_uuid) { "a-request-uuid" }
 
   describe "#service_provider" do
-    let(:service_provider) { instance_double("Spid::Saml2::ServiceProvider") }
+    let(:service_provider) { instance_double(Spid::Saml2::ServiceProvider) }
 
     let(:spid_configuration) do
       instance_double(
-        "Spid::Configuration",
-        service_provider: service_provider
+        Spid::Configuration,
+        service_provider:
       )
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Spid::Sso::Response do
   end
 
   describe "#identity_provider" do
-    let(:identity_provider) { instance_double("Spid::Saml2::IdentityProvider") }
+    let(:identity_provider) { instance_double(Spid::Saml2::IdentityProvider) }
     let(:issuer) { "https://identity.provider" }
 
     before do

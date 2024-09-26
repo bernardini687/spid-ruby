@@ -3,17 +3,13 @@
 module Spid
   module Slo
     class Request # :nodoc:
-      attr_reader :idp_name
-      attr_reader :session_index
-      attr_reader :relay_state
+      attr_reader :idp_name, :session_index, :relay_state
 
       def initialize(idp_name:, session_index:, relay_state: nil)
         @idp_name = idp_name
         @session_index = session_index
         @relay_state =
-          begin
-            relay_state || Spid.configuration.default_relay_state_path
-          end
+          relay_state || Spid.configuration.default_relay_state_path
       end
 
       def url
@@ -29,14 +25,12 @@ module Spid
 
       def query_params_signer
         @query_params_signer ||=
-          begin
-            Spid::Saml2::Utils::QueryParamsSigner.new(
-              saml_message: saml_message,
-              relay_state: relay_state,
-              private_key: settings.private_key,
-              signature_method: settings.signature_method
-            )
-          end
+          Spid::Saml2::Utils::QueryParamsSigner.new(
+            saml_message:,
+            relay_state:,
+            private_key: settings.private_key,
+            signature_method: settings.signature_method
+          )
       end
 
       def saml_message
@@ -45,15 +39,15 @@ module Spid
 
       def logout_request
         @logout_request ||= Spid::Saml2::LogoutRequest.new(
-          settings: settings,
-          session_index: session_index
+          settings:,
+          session_index:
         )
       end
 
       def settings
         @settings ||= Spid::Saml2::Settings.new(
-          service_provider: service_provider,
-          identity_provider: identity_provider
+          service_provider:,
+          identity_provider:
         )
       end
 

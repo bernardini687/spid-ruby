@@ -7,8 +7,8 @@ RSpec.describe Spid::Saml2::Utils::QueryParamsSigner do
     described_class.new(
       saml_message: "<samlp:AuthnRequest />",
       relay_state: "/path/to/return",
-      private_key: private_key,
-      signature_method: signature_method
+      private_key:,
+      signature_method:
     )
   end
 
