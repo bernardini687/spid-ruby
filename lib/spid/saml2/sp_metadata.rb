@@ -80,20 +80,19 @@ module Spid
 
             org_name = REXML::Element.new("md:OrganizationName")
             org_name.add_attributes("xml:lang" => "it")
-            org_name.text = "test_org" # TODO: make configurable
+            org_name.text = settings.sp_org_name
 
             org_display_name = REXML::Element.new("md:OrganizationDisplayName")
             org_display_name.add_attributes("xml:lang" => "it")
-            org_display_name.text = "Test Org" # TODO: make configurable
+            org_display_name.text = settings.sp_org_display_name
 
             org_url = REXML::Element.new("md:OrganizationURL")
             org_url.add_attributes("xml:lang" => "it")
-            org_url.text = "http://localhost:3000" # TODO: make configurable
+            org_url.text = settings.sp_org_url
 
             element.add_element(org_name)
             element.add_element(org_display_name)
             element.add_element(org_url)
-
             element
           end
       end
@@ -105,22 +104,20 @@ module Spid
             element.add_attributes("contactType" => "other")
 
             extensions = REXML::Element.new("md:Extensions")
+
             ipa_code = REXML::Element.new("spid:IPACode")
             ipa_code.text = "test_ipa" # TODO: make configurable
-            public_element = REXML::Element.new("spid:Public")
+
+            public_element = REXML::Element.new("spid:Public") # TODO: make configurable
+
             extensions.add_element(ipa_code)
             extensions.add_element(public_element)
-
-            company = REXML::Element.new("md:Company")
-            company.text = "test_org" # TODO: make configurable
 
             email = REXML::Element.new("md:EmailAddress")
             email.text = "text@example.com" # TODO: make configurable
 
             element.add_element(extensions)
-            element.add_element(company)
             element.add_element(email)
-
             element
           end
       end
@@ -161,7 +158,8 @@ module Spid
         @sp_sso_descriptor_attributes ||= {
           "protocolSupportEnumeration" =>
             "urn:oasis:names:tc:SAML:2.0:protocol",
-          "AuthnRequestsSigned" => true
+          "AuthnRequestsSigned" => true,
+          "WantAssertionsSigned" => true
         }
       end
 

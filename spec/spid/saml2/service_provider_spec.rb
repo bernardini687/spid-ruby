@@ -17,7 +17,10 @@ RSpec.describe Spid::Saml2::ServiceProvider do
       certificate:,
       digest_method:,
       signature_method:,
-      attribute_services:
+      attribute_services:,
+      org_name: "Acme Corporation",
+      org_display_name: "Acme",
+      org_url: "https://example.com"
     }
   end
 

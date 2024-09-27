@@ -81,6 +81,18 @@ module Spid
         service_provider.digest_method
       end
 
+      def sp_org_name
+        service_provider.org_name
+      end
+
+      def sp_org_display_name
+        service_provider.org_display_name
+      end
+
+      def sp_org_url
+        service_provider.org_url
+      end
+
       def acs_index
         "0"
       end
