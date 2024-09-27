@@ -22,6 +22,8 @@ module Spid
           end
       end
 
+      private
+
       def signed_info
         @signed_info ||=
           begin

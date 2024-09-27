@@ -13,18 +13,20 @@ module Spid
         @settings = settings
       end
 
-      def unsigned_document
-        document.add_element(entity_descriptor)
-        document.to_s
+      def to_saml
+        signed_document
       end
 
+      private
+
       def signed_document
-        doc = Xmldsig::SignedDocument.new(unsigned_document)
+        doc = Xmldsig::SignedDocument.new(unsigned_document) # id_attr:
         doc.sign(settings.private_key)
       end
 
-      def to_saml
-        signed_document
+      def unsigned_document
+        document.add_element(entity_descriptor)
+        document.to_s
       end
 
       def entity_descriptor
@@ -206,11 +208,9 @@ module Spid
           end
       end
 
-      private
-
       def entity_descriptor_id
         @entity_descriptor_id ||=
-          "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}"
+          "_#{Digest::MD5.hexdigest(settings.sp_entity_id)}" # should this match the digest_method config?
       end
     end
     # rubocop:enable Metrics/ClassLength
