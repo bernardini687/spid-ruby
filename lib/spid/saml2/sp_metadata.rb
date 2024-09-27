@@ -34,6 +34,8 @@ module Spid
             element.add_attributes(entity_descriptor_attributes)
             element.add_element sp_sso_descriptor
             element.add_element signature
+            element.add_element organization
+            element.add_element contact_person
             element
           end
       end
@@ -42,6 +44,7 @@ module Spid
         @entity_descriptor_attributes ||= {
           "xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#",
           "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata",
+          "xmlns:spid" => "https://spid.gov.it/saml-extensions",
           "entityID" => settings.sp_entity_id,
           "ID" => entity_descriptor_id
         }
@@ -64,6 +67,58 @@ module Spid
                 index, name, fields
               )
             end
+            element
+          end
+      end
+
+      def organization
+        @organization ||=
+          begin
+            element = REXML::Element.new("md:Organization")
+
+            org_name = REXML::Element.new("md:OrganizationName")
+            org_name.add_attributes("xml:lang" => "it")
+            org_name.text = "test_org" # TODO: make configurable
+
+            org_display_name = REXML::Element.new("md:OrganizationDisplayName")
+            org_display_name.add_attributes("xml:lang" => "it")
+            org_display_name.text = "Test Org" # TODO: make configurable
+
+            org_url = REXML::Element.new("md:OrganizationURL")
+            org_url.add_attributes("xml:lang" => "it")
+            org_url.text = "http://localhost:3000" # TODO: make configurable
+
+            element.add_element(org_name)
+            element.add_element(org_display_name)
+            element.add_element(org_url)
+
+            element
+          end
+      end
+
+      def contact_person
+        @contact_person ||=
+          begin
+            element = REXML::Element.new("md:ContactPerson")
+            element.add_attributes("contactType" => "other")
+
+            extensions = REXML::Element.new("md:Extensions")
+            ipa_code = REXML::Element.new("spid:IPACode")
+            ipa_code.text = "test_ipa" # TODO: make configurable
+            public_element = REXML::Element.new("spid:Public")
+            extensions.add_element(ipa_code)
+            extensions.add_element(public_element)
+
+            company = REXML::Element.new("md:Company")
+            company.text = "test_org" # TODO: make configurable
+
+            email = REXML::Element.new("md:EmailAddress")
+            email.text = "text@example.com" # TODO: make configurable
+
+            element.add_element(extensions)
+            element.add_element(company)
+            element.add_element(email)
+
             element
           end
       end
