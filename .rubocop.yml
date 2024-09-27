@@ -14,7 +14,7 @@ Metrics/BlockLength:
     - spec/**/*.rb
     - spid.gemspec
     - lib/**/*.rake
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
     - spid.gemspec
 RSpec/DescribeClass:

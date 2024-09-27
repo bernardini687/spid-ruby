@@ -2,6 +2,7 @@
 
 module Spid
   module Saml2
+    # rubocop:disable Metrics/ClassLength
     class XmlSignature # :nodoc:
       attr_reader :settings, :sign_reference
 
@@ -16,6 +17,7 @@ module Spid
             element = REXML::Element.new("ds:Signature")
             element.add_element(signed_info)
             element.add_element(signature_value)
+            element.add_element(key_info)
             element
           end
       end
@@ -112,6 +114,20 @@ module Spid
       def signature_value
         @signature_value ||= REXML::Element.new("ds:SignatureValue")
       end
+
+      def key_info
+        @key_info ||=
+          begin
+            element = REXML::Element.new("ds:KeyInfo")
+            x509_data = REXML::Element.new("ds:X509Data")
+            certificate = REXML::Element.new("ds:X509Certificate")
+            certificate.text = settings.x509_certificate_der
+            x509_data.add_element(certificate)
+            element.add_element(x509_data)
+            element
+          end
+      end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
