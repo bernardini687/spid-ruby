@@ -32,8 +32,8 @@ module Spid
           begin
             element = REXML::Element.new("md:EntityDescriptor")
             element.add_attributes(entity_descriptor_attributes)
-            element.add_element sp_sso_descriptor
             element.add_element signature
+            element.add_element sp_sso_descriptor
             element.add_element organization
             element.add_element contact_person
             element
@@ -58,8 +58,8 @@ module Spid
             element = REXML::Element.new("md:SPSSODescriptor")
             element.add_attributes(sp_sso_descriptor_attributes)
             element.add_element key_descriptor
-            element.add_element ac_service
             element.add_element slo_service
+            element.add_element ac_service
             settings.sp_attribute_services.each.with_index do |service, index|
               name = service[:name]
               fields = service[:fields]
