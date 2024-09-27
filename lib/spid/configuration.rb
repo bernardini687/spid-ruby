@@ -18,6 +18,7 @@ module Spid
       init_bindings
       init_dig_sig_methods
       init_openssl_keys
+      init_organization
     end
 
     def init_endpoint
