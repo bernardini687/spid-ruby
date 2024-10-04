@@ -38,6 +38,8 @@ RSpec.describe "Receiving a SSO assertion" do
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
+      config.organization = { name: "name", display_name: "display_name", url: "url" }
+      config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
     end
     Timecop.freeze
     Timecop.travel("2018-08-04 01:00 +01:00")

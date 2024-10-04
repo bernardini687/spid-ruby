@@ -20,7 +20,7 @@ module Spid
       private
 
       def signed_document
-        doc = Xmldsig::SignedDocument.new(unsigned_document) # id_attr:
+        doc = Xmldsig::SignedDocument.new(unsigned_document)
         doc.sign(settings.private_key)
       end
 
@@ -37,7 +37,7 @@ module Spid
             element.add_element signature
             element.add_element sp_sso_descriptor
             element.add_element organization
-            element.add_element contact_person
+            element.add_element public_contact_person
             element
           end
       end
@@ -76,19 +76,21 @@ module Spid
       def organization
         @organization ||=
           begin
+            name, display_name, url = settings.sp_organization.values_at(*ORGANIZATION_REQUIRED_KEYS)
+
             element = REXML::Element.new("md:Organization")
 
             org_name = REXML::Element.new("md:OrganizationName")
             org_name.add_attributes("xml:lang" => "it")
-            org_name.text = settings.sp_org_name
+            org_name.text = name
 
             org_display_name = REXML::Element.new("md:OrganizationDisplayName")
             org_display_name.add_attributes("xml:lang" => "it")
-            org_display_name.text = settings.sp_org_display_name
+            org_display_name.text = display_name
 
             org_url = REXML::Element.new("md:OrganizationURL")
             org_url.add_attributes("xml:lang" => "it")
-            org_url.text = settings.sp_org_url
+            org_url.text = url
 
             element.add_element(org_name)
             element.add_element(org_display_name)
@@ -97,27 +99,26 @@ module Spid
           end
       end
 
-      def contact_person
-        @contact_person ||=
+      def public_contact_person
+        @public_contact_person ||=
           begin
+            ipa_code, email = settings.sp_contact_person.values_at(:ipa_code, :email)
+
             element = REXML::Element.new("md:ContactPerson")
             element.add_attributes("contactType" => "other")
 
-            extensions = REXML::Element.new("md:Extensions")
+            contact_ipa_code = REXML::Element.new("spid:IPACode")
+            contact_ipa_code.text = ipa_code
 
-            ipa_code = REXML::Element.new("spid:IPACode")
-            ipa_code.text = "test_ipa" # TODO: make configurable
+            contact_extensions = REXML::Element.new("md:Extensions")
+            contact_extensions.add_element(contact_ipa_code)
+            contact_extensions.add_element(REXML::Element.new("spid:Public"))
 
-            public_element = REXML::Element.new("spid:Public") # TODO: make configurable
+            contact_email = REXML::Element.new("md:EmailAddress")
+            contact_email.text = email
 
-            extensions.add_element(ipa_code)
-            extensions.add_element(public_element)
-
-            email = REXML::Element.new("md:EmailAddress")
-            email.text = "text@example.com" # TODO: make configurable
-
-            element.add_element(extensions)
-            element.add_element(email)
+            element.add_element(contact_extensions)
+            element.add_element(contact_email)
             element
           end
       end

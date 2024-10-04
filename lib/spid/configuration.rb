@@ -7,18 +7,19 @@ module Spid
     attr_accessor :acs_binding, :acs_path, :attribute_services, :certificate_pem, :default_relay_state_path,
                   :digest_method, :hostname, :idp_metadata_dir_path, :logger, :logging_enabled, :login_path,
                   :logout_path, :metadata_path, :private_key_pem, :signature_method, :slo_binding, :slo_path,
-                  :org_name, :org_display_name, :org_url
+                  :organization, :contact_person
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
       @attribute_services       = []
+      @organization             = {}
+      @contact_person           = {}
       @logging_enabled          = false
       @logger                   = ::Logger.new $stdout
       init_endpoint
       init_bindings
       init_dig_sig_methods
       init_openssl_keys
-      init_organization
     end
 
     def init_endpoint
@@ -46,12 +47,6 @@ module Spid
       @certificate              = nil
     end
 
-    def init_organization
-      @org_name                 = "Acme Corporation"
-      @org_display_name         = "Acme"
-      @org_url                  = "https://example.com"
-    end
-
     def certificate
       return nil if certificate_pem.nil?
 
@@ -72,7 +67,7 @@ module Spid
           private_key:, certificate:,
           digest_method:, signature_method:,
           attribute_services:, host: hostname,
-          org_name:, org_display_name:, org_url:
+          organization:, contact_person:
         )
     end
   end

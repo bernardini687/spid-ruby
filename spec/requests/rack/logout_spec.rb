@@ -44,6 +44,8 @@ RSpec.describe "Using the Spid::Rack::Logout middleware" do
       config.certificate_pem = certificate_pem
       config.default_relay_state_path = default_relay_state_path
       config.attribute_services = attribute_services
+      config.organization = { name: "name", display_name: "display_name", url: "url" }
+      config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
     end
   end
 

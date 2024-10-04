@@ -17,7 +17,6 @@ module Spid
         app.call(env)
       end
 
-      # rubocop:disable Metrics/ClassLength
       class SloEnv # :nodoc:
         attr_reader :env, :request
 
@@ -147,7 +146,6 @@ module Spid
           )
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end

@@ -6,7 +6,7 @@ module Spid
   module Saml2
     class ServiceProvider # :nodoc:
       attr_reader :host, :acs_path, :acs_binding, :slo_path, :slo_binding, :metadata_path, :private_key, :certificate,
-                  :digest_method, :signature_method, :attribute_services, :org_name, :org_display_name, :org_url
+                  :digest_method, :signature_method, :attribute_services, :organization, :contact_person
 
       # rubocop:disable Metrics/ParameterLists
       # rubocop:disable Metrics/MethodLength
@@ -22,9 +22,8 @@ module Spid
         digest_method:,
         signature_method:,
         attribute_services:,
-        org_name:,
-        org_display_name:,
-        org_url:
+        organization:,
+        contact_person:
       )
         @host = host
         @acs_path               = acs_path
@@ -37,11 +36,12 @@ module Spid
         @digest_method          = digest_method
         @signature_method       = signature_method
         @attribute_services     = attribute_services
-        @org_name               = org_name
-        @org_display_name       = org_display_name
-        @org_url                = org_url
+        @organization           = organization
+        @contact_person         = contact_person
         validate_digest_methods
         validate_attributes
+        validate_organization
+        validate_contact_person
         validate_private_key
         validate_certificate
       end
@@ -91,6 +91,27 @@ module Spid
                 "Provided digest method is not valid: " \
                 "use one of #{SIGNATURE_METHODS.join(', ')}"
         end
+      end
+
+      def validate_organization
+        missing_keys = ORGANIZATION_REQUIRED_KEYS - organization.keys
+        return unless missing_keys.any?
+
+        raise InvalidOrganizationConfig,
+              "The following required keys are missing: #{missing_keys.join(', ')}"
+      end
+
+      def validate_contact_person
+        missing_keys = PUBLIC_CONTACT_REQUIRED_KEYS - contact_person.keys
+        if missing_keys.any?
+          raise InvalidContactPersonConfig,
+                "The following required keys are missing: #{missing_keys.join(', ')}"
+        end
+
+        return if [true].include?(contact_person[:public])
+
+        raise InvalidContactPersonConfig,
+              "The `:public` key must be `true`"
       end
 
       def validate_private_key

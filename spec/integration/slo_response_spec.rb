@@ -42,6 +42,8 @@ RSpec.describe "Validation of Spid::Slo::Response" do
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
+      config.organization = { name: "name", display_name: "display_name", url: "url" }
+      config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
     end
   end
 

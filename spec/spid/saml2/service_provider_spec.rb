@@ -18,14 +18,15 @@ RSpec.describe Spid::Saml2::ServiceProvider do
       digest_method:,
       signature_method:,
       attribute_services:,
-      org_name: "Acme Corporation",
-      org_display_name: "Acme",
-      org_url: "https://example.com"
+      organization:,
+      contact_person:
     }
   end
 
   let(:host) { "https://service.provider" }
   let(:attribute_services) { [{ name: "Service 1", fields: [:email] }] }
+  let(:organization) { { name: "name", display_name: "display_name", url: "url" } }
+  let(:contact_person) { { public: true, ipa_code: "ipa_code", email: "email" } }
   let(:acs_path) { "/sso" }
   let(:acs_binding) { "acs-binding-method" }
   let(:slo_path) { "/slo" }
@@ -51,6 +52,36 @@ RSpec.describe Spid::Saml2::ServiceProvider do
     it "raises a Spid::MissingAttributeServicesError error" do
       expect { service_provider }.
         to raise_error Spid::MissingAttributeServicesError
+    end
+  end
+
+  context "when organization is empty" do
+    let(:organization) { {} }
+
+    it "raises a Spid::InvalidOrganizationConfig error" do
+      expect { service_provider }.
+        to raise_error Spid::InvalidOrganizationConfig,
+                       "The following required keys are missing: name, display_name, url"
+    end
+  end
+
+  context "when contact_person is empty" do
+    let(:contact_person) { {} }
+
+    it "raises a Spid::InvalidContactPersonConfig error" do
+      expect { service_provider }.
+        to raise_error Spid::InvalidContactPersonConfig,
+                       "The following required keys are missing: public, ipa_code, email"
+    end
+  end
+
+  context "when contact_person is not public" do
+    let(:contact_person) { { public: false, ipa_code: "ipa_code", email: "email" } }
+
+    it "raises a Spid::InvalidContactPersonConfig error" do
+      expect { service_provider }.
+        to raise_error Spid::InvalidContactPersonConfig,
+                       "The `:public` key must be `true`"
     end
   end
 

@@ -64,17 +64,30 @@ Il protocollo SPID prevede la possibilità di specificare almeno un servizio di 
 
 Per configurare dei servizi bisogna utilizzare questa configurazione
 ```ruby
-  Spid.configure do |config|
-    ...
-    config.attribute_services = [
-      { name: "Service 1 name", fields: [ elenco_attributi_servizio_1 ] },
-      { name: "Service 2 name", fields: [ elenco_attributi_servizio_2] }
-    ]
+Spid.configure do |config|
+  ...
+  config.attribute_services = [
+    { name: "Service 1 name", fields: [ elenco_attributi_servizio_1 ] },
+    { name: "Service 2 name", fields: [ elenco_attributi_servizio_2] }
+  ]
 ```
 Gli attributi disponibili sono
 ```
  :spid_code, :name, :family_name, :place_of_birth, :date_of_birth, :gender, :company_name, :registered_office, :fiscal_number, :iva_code, :id_card, :mobile_phone, :email, :address, :digital_address
 ```
+
+#### Organization
+Per configurare i valori del tag `Organization`:
+```ruby
+config.organization = { name: "name", display_name: "display_name", url: "url" }
+```
+
+#### ContactPerson
+Per configurare i valori del tag `ContactPerson` di un Service Provider **pubblico**:
+```ruby
+config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
+```
+
 ### Scaricamento metadata degli Identity Providers
 Per motivi di sicurezza il sistema SPID prevede che un Service Provider abbia una copia 'sicura' dei metadata degli Identity Providers.
 

@@ -41,6 +41,8 @@ RSpec.describe "Using the Spid::Rack::Metadata middleware" do
       config.hostname = hostname
       config.metadata_path = metadata_path
       config.attribute_services = attribute_services
+      config.organization = { name: "name", display_name: "display_name", url: "url" }
+      config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
     end
   end
 

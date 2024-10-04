@@ -28,6 +28,8 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
       config.attribute_services = [
         { name: "Service 1", fields: [:email] }
       ]
+      config.organization = { name: "name", display_name: "display_name", url: "url" }
+      config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
     end
   end
 
@@ -172,7 +174,70 @@ RSpec.describe "Spid::Metadata conforms to SPID specification" do
         end
       end
 
-      pending "Could contain Organization node"
+      describe "Organization node" do
+        let(:organization_node) do
+          entity_descriptor_node.children.find { |child| child.name == "Organization" }
+        end
+
+        it "exists" do
+          expect(organization_node).not_to be_nil
+        end
+
+        it "has the expected OrganizationName element" do
+          element = organization_node.children.find { |child| child.name == "OrganizationName" }
+          expect(element.text).to eq "name"
+        end
+
+        it "has the expected OrganizationDisplayName element" do
+          element = organization_node.children.find { |child| child.name == "OrganizationDisplayName" }
+          expect(element.text).to eq "display_name"
+        end
+
+        it "has the expected OrganizationURL element" do
+          element = organization_node.children.find { |child| child.name == "OrganizationURL" }
+          expect(element.text).to eq "url"
+        end
+      end
+
+      describe "ContactPerson node" do
+        let(:contact_person_node) do
+          entity_descriptor_node.children.find { |child| child.name == "ContactPerson" }
+        end
+
+        it "exists" do
+          expect(contact_person_node).not_to be_nil
+        end
+
+        it "has the expected contactType attribute" do
+          attribute = contact_person_node.attributes["contactType"].value
+          expect(attribute).to eq "other"
+        end
+
+        it "has the expected EmailAddress element" do
+          element = contact_person_node.children.find { |child| child.name == "EmailAddress" }
+          expect(element.text).to eq "email"
+        end
+
+        describe "Extensions node" do
+          let(:extensions_node) do
+            contact_person_node.children.find { |child| child.name == "Extensions" }
+          end
+
+          it "exists" do
+            expect(extensions_node).not_to be_nil
+          end
+
+          it "has the Public element" do
+            element = extensions_node.children.find { |child| child.name == "Public" }
+            expect(element).not_to be_nil
+          end
+
+          it "has the expected IPACode element" do
+            element = extensions_node.children.find { |child| child.name == "IPACode" }
+            expect(element.text).to eq "ipa_code"
+          end
+        end
+      end
     end
   end
 end

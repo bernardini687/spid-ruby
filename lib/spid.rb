@@ -19,6 +19,8 @@ module Spid # :nodoc:
   class MissingAttributeServicesError < StandardError; end
   class PrivateKeyTooShortError < StandardError; end
   class CertificateNotBelongsToPKeyError < StandardError; end
+  class InvalidOrganizationConfig < StandardError; end
+  class InvalidContactPersonConfig < StandardError; end
 
   EXACT_COMPARISON = :exact
   MINIMUM_COMPARISON = :minimum
@@ -95,6 +97,9 @@ module Spid # :nodoc:
   }.freeze
 
   ATTRIBUTES = ATTRIBUTES_MAP.keys.freeze
+
+  ORGANIZATION_REQUIRED_KEYS = %i[name display_name url].freeze
+  PUBLIC_CONTACT_REQUIRED_KEYS = %i[public ipa_code email].freeze
 
   class << self
     attr_writer :configuration

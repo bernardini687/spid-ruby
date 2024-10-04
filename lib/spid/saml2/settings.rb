@@ -61,6 +61,14 @@ module Spid
         service_provider.attribute_services
       end
 
+      def sp_organization
+        service_provider.organization
+      end
+
+      def sp_contact_person
+        service_provider.contact_person
+      end
+
       def private_key
         service_provider.private_key
       end
@@ -79,18 +87,6 @@ module Spid
 
       def digest_method
         service_provider.digest_method
-      end
-
-      def sp_org_name
-        service_provider.org_name
-      end
-
-      def sp_org_display_name
-        service_provider.org_display_name
-      end
-
-      def sp_org_url
-        service_provider.org_url
       end
 
       def acs_index

@@ -2,7 +2,6 @@
 
 module Spid
   module Saml2
-    # rubocop:disable Metrics/ClassLength
     class XmlSignature # :nodoc:
       attr_reader :settings, :sign_reference
 
@@ -130,6 +129,5 @@ module Spid
           end
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end
