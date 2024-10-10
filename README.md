@@ -42,10 +42,12 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |Nome|valore default||Obbligatorio?|
 |:---|:---|:---|:---|
 |config.hostname||Hostname dell'applicazione, che verrà utilizzato come entity_id del service provider|✓|
-|config.idp_metadata_dir_path||Directory dove si troveranno copia dei metadata degli Identity Provider del sistema SPID|✓|
+|config.idp_metadata_dir_path||Directory coi metadata in XML degli Identity Provider del sistema SPID ([vedi sotto](#idp-metadata-directory-path))|✓|
 |config.private_key_pem||Chiave privata del Service Provider in rappresentazione pem|✓|
 |config.certificate_pem||Certificato X509 del Service Provider in rappresentazione pem|✓|
-|config.attribute_services||Array degli attribute service indexes richiesti dal Service Provider all'Identity Provider (vedi sotto)|✓|
+|config.attribute_services||Array degli attribute service indexes richiesti dal Service Provider all'Identity Provider ([vedi sotto](#attribute-services))|✓|
+|config.organization||Hash di valori per personalizzare il tag `md:Organization` del Service Provider ([vedi sotto](#organization))|✓|
+|config.contact_person||Hash di valori per personalizzare il tag `md:ContactPerson` del Service Provider ([vedi sotto](#contactperson))|✓|
 |config.metadata_path|`/spid/metadata`|Path per la fornitura del metadata del Service Provider||
 |config.login_path|`/spid/login`|Path per la generazione ed invio dell'AuthnRequest all'Identity Provider||
 |config.acs_path|`/spid/sso`|Path per la ricezione dell'Assertion di autenticazione||
@@ -58,6 +60,9 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |config.slo_binding|Spid::BINDINGS_HTTP_REDIRECT|Binding method utilizzato ler la ricezione dell'Assertion di chiusura della sessione||
 |config.logging_enabled|false|Se true, abilita il logging delle richieste||
 |config.logger|Logger.new($stdout)|Indica lo stream dove viene salvato il log delle AuthnRequest e delle Response||
+
+#### IdP Metadata Directory Path
+La gemma estrae un Identity Provider per ogni tag `md:EntityDescriptor` che viene trovato tra i file XML nella cartella configurata. A [questo URL](https://registry.spid.gov.it/entities-idp) è esposto un unico file XML che aggrega tutti i metadata. Il file è composto da un singolo tag `md:EntitiesDescriptor` contenente un figlio `md:EntityDescriptor` per ogni Identity Provider del sistema SPID.
 
 #### Attribute Services
 Il protocollo SPID prevede la possibilità di specificare almeno un servizio di attributi. Ogni servizio ha un nome e un elenco di attributi richiesti.
@@ -77,13 +82,13 @@ Gli attributi disponibili sono
 ```
 
 #### Organization
-Per configurare i valori del tag `Organization`:
+Per configurare i valori del tag `md:Organization`:
 ```ruby
 config.organization = { name: "name", display_name: "display_name", url: "url" }
 ```
 
 #### ContactPerson
-Per configurare i valori del tag `ContactPerson` di un Service Provider **pubblico**:
+Per configurare i valori del tag `md:ContactPerson` di un Service Provider **pubblico**:
 ```ruby
 config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
 ```

@@ -9,41 +9,42 @@ RSpec.describe Spid::IdentityProviderManager do
     end
   end
 
-  let(:idp_metadata) do
-    File.read(metadata_file_path)
-  end
-
   let(:metadata_dir_path) do
     generate_fixture_path("config/idp_metadata")
-  end
-
-  let(:metadata_file_path) do
-    generate_fixture_path(
-      "config/idp_metadata/identity-provider-metadata.xml"
-    )
   end
 
   after do
     Spid.reset_configuration!
   end
 
-  describe ".find_by_entity_id" do
-    let(:idp) { described_class.find_by_entity(entity_id) }
+  describe "#identity_providers" do
+    # rubocop:disable RSpec/ExampleLength
+    it "returns an array of identity providers for each entity descriptor" do
+      idps = described_class.instance.identity_providers
 
-    context "when a valid issuer_id is provided" do
-      let(:entity_id) { "https://identity.provider" }
+      expect(idps.size).to eq(4)
+      expect(idps.map(&:entity_id)).to contain_exactly(
+        "https://identity.provider",
+        "https://identity.provider",
+        "https://multiple.identity.provider1",
+        "https://multiple.identity.provider2"
+      )
+    end
+    # rubocop:enable RSpec/ExampleLength
+  end
 
-      it "returns the identity provider configuration" do
-        expect(idp.entity_id).to eq entity_id
-      end
+  describe ".find_by_entity" do
+    it "finds an identity provider by entity_id" do
+      idp = described_class.find_by_entity("https://identity.provider")
+
+      expect(idp).not_to be_nil
+      expect(idp.entity_id).to eq "https://identity.provider"
     end
 
-    context "when a not valid issuer_id is provided" do
-      let(:entity_id) { "https://another-identity.provider" }
+    it "returns nil if no identity provider matches the entity_id" do
+      idp = described_class.find_by_entity("https://another-identity.provider")
 
-      it "returns nil" do
-        expect(idp).to be_nil
-      end
+      expect(idp).to be_nil
     end
   end
 end
