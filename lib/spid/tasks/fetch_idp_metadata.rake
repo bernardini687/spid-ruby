@@ -3,9 +3,10 @@
 require "spid/synchronize_idp_metadata"
 
 namespace :spid do
-  desc "Synchronize IDP metadata"
+  desc "Fetch XML metadata of the SPID Identity Providers and store it in the `config.idp_metadata_dir_path` folder"
   task :fetch_idp_metadata do
     Rake::Task["environment"].invoke if defined?(Rails)
-    Spid::SynchronizeIdpMetadata.new.call
+    file_path = Spid::SynchronizeIdpMetadata.new.call
+    puts "XML file saved to: #{file_path}"
   end
 end

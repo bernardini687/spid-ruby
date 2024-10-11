@@ -99,7 +99,7 @@ Per motivi di sicurezza il sistema SPID prevede che un Service Provider abbia un
 Al fine di facilitarne lo scaricamento la gemma `spid-ruby` prevede un task rake che li installa nella directory `config.idp_metadata_dir_path`.
 
 ```bash
-$ rake spid:fetch_idp_metadata
+$ bundle exec rake spid:fetch_idp_metadata
 ```
 
 Essendo dei segreti, è sconsigliato salvare i metadata di produzione nel codebase, quindi è preferibile rimandare il task durante la fase di deploy.
@@ -127,8 +127,8 @@ $ heroku buildpacks:add  https://github.com/cantierecreativo/spid-ruby-heroku-bu
 ```
 che lancierà automaticamente il comando durante il deploy. In questo modo i metadata verranno **congelati** nel dyno e saranno sempre disponibili
 
-#### Sinatra
-Occorre modificare il `Rakefile` dell'applicazione aggiungendo
+#### Utilizzo task rake da Sinatra o Rails
+Occorre modificare il `Rakefile` dell'applicazione aggiungendo:
 ```ruby
 # qui è necessario caricare preventivamente la configurazione SPID
 # require "sinatra-app.rb"

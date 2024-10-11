@@ -101,6 +101,9 @@ module Spid # :nodoc:
   ORGANIZATION_REQUIRED_KEYS = %i[name display_name url].freeze
   PUBLIC_CONTACT_REQUIRED_KEYS = %i[public ipa_code email].freeze
 
+  IDP_METADATA_XML_URL = "https://registry.spid.gov.it/entities-idp"
+  IDP_METADATA_XML_OUT = "entities-idp.xml"
+
   class << self
     attr_writer :configuration
   end
