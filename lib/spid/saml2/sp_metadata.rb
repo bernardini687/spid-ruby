@@ -76,20 +76,17 @@ module Spid
       def organization
         @organization ||=
           begin
-            name, display_name, url = settings.sp_organization.values_at(*ORGANIZATION_REQUIRED_KEYS)
-
             org = REXML::Element.new("md:Organization")
             org_name = REXML::Element.new("md:OrganizationName", org)
             org_display_name = REXML::Element.new("md:OrganizationDisplayName", org)
             org_url = REXML::Element.new("md:OrganizationURL", org)
 
             org_name.add_attributes("xml:lang" => "it")
-            org_name.text = name
+            org_name.text = settings.sp_organization[:name]
             org_display_name.add_attributes("xml:lang" => "it")
-            org_display_name.text = display_name
+            org_display_name.text = settings.sp_organization[:display_name]
             org_url.add_attributes("xml:lang" => "it")
-            org_url.text = url
-
+            org_url.text = settings.sp_organization[:url]
             org
           end
       end
@@ -97,8 +94,6 @@ module Spid
       def public_contact_person
         @public_contact_person ||=
           begin
-            ipa_code, email = settings.sp_contact_person.values_at(:ipa_code, :email)
-
             cp = REXML::Element.new("md:ContactPerson")
             cp_extensions = REXML::Element.new("md:Extensions", cp)
             cp_ipa_code = REXML::Element.new("spid:IPACode", cp_extensions)
@@ -106,9 +101,8 @@ module Spid
 
             cp.add_attributes("contactType" => "other")
             cp_extensions.add_element(REXML::Element.new("spid:Public"))
-            cp_ipa_code.text = ipa_code
-            cp_email.text = email
-
+            cp_ipa_code.text = settings.sp_contact_person[:ipa_code]
+            cp_email.text = settings.sp_contact_person[:email]
             cp
           end
       end

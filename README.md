@@ -49,6 +49,7 @@ tramite il quale potete accedere alle seguenti configurazioni:
 |config.organization||Hash di valori per personalizzare il tag `md:Organization` del Service Provider ([vedi sotto](#organization))|✓|
 |config.contact_person||Hash di valori per personalizzare il tag `md:ContactPerson` del Service Provider ([vedi sotto](#contactperson))|✓|
 |config.metadata_path|`/spid/metadata`|Path per la fornitura del metadata del Service Provider||
+|config.cie_metadata_path|`nil`|Path per la fornitura del metadata del Service Provider compatibile con CIE||
 |config.login_path|`/spid/login`|Path per la generazione ed invio dell'AuthnRequest all'Identity Provider||
 |config.acs_path|`/spid/sso`|Path per la ricezione dell'Assertion di autenticazione||
 |config.logout_path|`/spid/logout`|Path per la generazione ed invio della LogoutRequest all'Identity Provider||
@@ -91,6 +92,12 @@ config.organization = { name: "name", display_name: "display_name", url: "url" }
 Per configurare i valori del tag `md:ContactPerson` di un Service Provider **pubblico**:
 ```ruby
 config.contact_person = { public: true, ipa_code: "ipa_code", email: "email" }
+```
+
+Nel caso in cui sia stato fornito un path per `config.cie_metadata_path`, occorre specificare anche i valori per i tag `cie:Municipality` e `md:Company`:
+```ruby
+config.cie_metadata_path = "/cie/metadata"
+config.contact_person = { public: true, ipa_code: "ipa_code", municipality: "municipality", company: "company", email: "email" }
 ```
 
 ### Scaricamento metadata degli Identity Providers

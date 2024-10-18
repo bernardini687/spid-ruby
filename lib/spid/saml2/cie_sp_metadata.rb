@@ -22,10 +22,6 @@ module Spid
       def public_contact_person
         @public_contact_person ||=
           begin
-            ipa_code, email = settings.sp_contact_person.values_at(:ipa_code, :email)
-            municipality = "municipality"
-            company = "company"
-
             cp = REXML::Element.new("md:ContactPerson")
             cp_extensions = REXML::Element.new("md:Extensions", cp)
             cp_ipa_code = REXML::Element.new("cie:IPACode", cp_extensions)
@@ -35,11 +31,10 @@ module Spid
 
             cp.add_attributes("contactType" => "administrative")
             cp_extensions.add_element(REXML::Element.new("cie:Public"))
-            cp_ipa_code.text = ipa_code
-            cp_municipality.text = municipality
-            cp_company.text = company
-            cp_email.text = email
-
+            cp_ipa_code.text = settings.sp_contact_person[:ipa_code]
+            cp_municipality.text = settings.sp_contact_person[:municipality]
+            cp_company.text = settings.sp_contact_person[:company]
+            cp_email.text = settings.sp_contact_person[:email]
             cp
           end
       end

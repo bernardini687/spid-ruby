@@ -105,7 +105,10 @@ module Spid
       end
 
       def validate_contact_person
-        missing_keys = PUBLIC_CONTACT_REQUIRED_KEYS - contact_person.keys
+        required_keys = PUBLIC_CONTACT_REQUIRED_KEYS.dup
+        required_keys += CIE_PUBLIC_CONTACT_REQUIRED_KEYS if cie_metadata_path
+
+        missing_keys = required_keys - contact_person.keys
         if missing_keys.any?
           raise InvalidContactPersonConfig,
                 "The following required keys are missing: #{missing_keys.join(', ')}"

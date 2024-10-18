@@ -13,6 +13,7 @@ RSpec.describe Spid::Saml2::ServiceProvider do
       slo_path:,
       slo_binding:,
       metadata_path:,
+      cie_metadata_path:,
       private_key:,
       certificate:,
       digest_method:,
@@ -32,6 +33,7 @@ RSpec.describe Spid::Saml2::ServiceProvider do
   let(:slo_path) { "/slo" }
   let(:slo_binding) { "slo-binding-method" }
   let(:metadata_path) { "/metadata" }
+  let(:cie_metadata_path) { nil }
   let(:private_key_path) { generate_fixture_path("private-key.pem") }
   let(:certificate_path) { generate_fixture_path("certificate.pem") }
   let(:digest_method) { Spid::SHA256 }
@@ -82,6 +84,16 @@ RSpec.describe Spid::Saml2::ServiceProvider do
       expect { service_provider }.
         to raise_error Spid::InvalidContactPersonConfig,
                        "The `:public` key must be `true`"
+    end
+  end
+
+  context "when cie_metadata_path is set" do
+    let(:cie_metadata_path) { "/cie/metadata" }
+
+    it "requires contact_person to have more keys" do
+      expect { service_provider }.
+        to raise_error Spid::InvalidContactPersonConfig,
+                       "The following required keys are missing: municipality, company"
     end
   end
 
