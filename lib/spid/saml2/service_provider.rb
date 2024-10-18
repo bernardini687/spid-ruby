@@ -6,7 +6,8 @@ module Spid
   module Saml2
     class ServiceProvider # :nodoc:
       attr_reader :host, :acs_path, :acs_binding, :slo_path, :slo_binding, :metadata_path, :private_key, :certificate,
-                  :digest_method, :signature_method, :attribute_services, :organization, :contact_person
+                  :digest_method, :signature_method, :attribute_services, :organization, :contact_person,
+                  :cie_metadata_path
 
       # rubocop:disable Metrics/ParameterLists
       # rubocop:disable Metrics/MethodLength
@@ -23,7 +24,8 @@ module Spid
         signature_method:,
         attribute_services:,
         organization:,
-        contact_person:
+        contact_person:,
+        cie_metadata_path: nil
       )
         @host = host
         @acs_path               = acs_path
@@ -31,6 +33,7 @@ module Spid
         @slo_path               = slo_path
         @slo_binding            = slo_binding
         @metadata_path          = metadata_path
+        @cie_metadata_path      = cie_metadata_path
         @private_key            = private_key
         @certificate            = certificate
         @digest_method          = digest_method

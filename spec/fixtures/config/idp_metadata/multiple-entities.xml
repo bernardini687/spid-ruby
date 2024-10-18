@@ -8,7 +8,7 @@
     entityID="https://multiple.identity.provider1">
     <md:IDPSSODescriptor WantAuthnRequestsSigned="false"
       protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-      <md:KeyDescriptor use="encryption">
+      <md:KeyDescriptor use="signing">
         <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
           <ds:X509Data>
             <ds:X509Certificate>
@@ -28,7 +28,7 @@
     entityID="https://multiple.identity.provider2">
     <md:IDPSSODescriptor WantAuthnRequestsSigned="false"
       protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
-      <md:KeyDescriptor use="encryption">
+      <md:KeyDescriptor use="signing">
         <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
           <ds:X509Data>
             <ds:X509Certificate>

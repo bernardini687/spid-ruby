@@ -7,7 +7,7 @@ module Spid
     attr_accessor :acs_binding, :acs_path, :attribute_services, :certificate_pem, :default_relay_state_path,
                   :digest_method, :hostname, :idp_metadata_dir_path, :logger, :logging_enabled, :login_path,
                   :logout_path, :metadata_path, :private_key_pem, :signature_method, :slo_binding, :slo_path,
-                  :organization, :contact_person
+                  :organization, :contact_person, :cie_metadata_path
 
     def initialize
       @idp_metadata_dir_path    = "idp_metadata"
@@ -25,6 +25,7 @@ module Spid
     def init_endpoint
       @hostname                 = nil
       @metadata_path            = "/spid/metadata"
+      @cie_metadata_path        = nil
       @login_path               = "/spid/login"
       @logout_path              = "/spid/logout"
       @acs_path                 = "/spid/sso"
@@ -67,7 +68,8 @@ module Spid
           private_key:, certificate:,
           digest_method:, signature_method:,
           attribute_services:, host: hostname,
-          organization:, contact_person:
+          organization:, contact_person:,
+          cie_metadata_path:
         )
     end
   end

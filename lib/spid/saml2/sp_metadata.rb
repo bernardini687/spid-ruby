@@ -78,24 +78,19 @@ module Spid
           begin
             name, display_name, url = settings.sp_organization.values_at(*ORGANIZATION_REQUIRED_KEYS)
 
-            element = REXML::Element.new("md:Organization")
+            org = REXML::Element.new("md:Organization")
+            org_name = REXML::Element.new("md:OrganizationName", org)
+            org_display_name = REXML::Element.new("md:OrganizationDisplayName", org)
+            org_url = REXML::Element.new("md:OrganizationURL", org)
 
-            org_name = REXML::Element.new("md:OrganizationName")
             org_name.add_attributes("xml:lang" => "it")
             org_name.text = name
-
-            org_display_name = REXML::Element.new("md:OrganizationDisplayName")
             org_display_name.add_attributes("xml:lang" => "it")
             org_display_name.text = display_name
-
-            org_url = REXML::Element.new("md:OrganizationURL")
             org_url.add_attributes("xml:lang" => "it")
             org_url.text = url
 
-            element.add_element(org_name)
-            element.add_element(org_display_name)
-            element.add_element(org_url)
-            element
+            org
           end
       end
 
@@ -104,22 +99,17 @@ module Spid
           begin
             ipa_code, email = settings.sp_contact_person.values_at(:ipa_code, :email)
 
-            element = REXML::Element.new("md:ContactPerson")
-            element.add_attributes("contactType" => "other")
+            cp = REXML::Element.new("md:ContactPerson")
+            cp_extensions = REXML::Element.new("md:Extensions", cp)
+            cp_ipa_code = REXML::Element.new("spid:IPACode", cp_extensions)
+            cp_email = REXML::Element.new("md:EmailAddress", cp)
 
-            contact_ipa_code = REXML::Element.new("spid:IPACode")
-            contact_ipa_code.text = ipa_code
+            cp.add_attributes("contactType" => "other")
+            cp_extensions.add_element(REXML::Element.new("spid:Public"))
+            cp_ipa_code.text = ipa_code
+            cp_email.text = email
 
-            contact_extensions = REXML::Element.new("md:Extensions")
-            contact_extensions.add_element(contact_ipa_code)
-            contact_extensions.add_element(REXML::Element.new("spid:Public"))
-
-            contact_email = REXML::Element.new("md:EmailAddress")
-            contact_email.text = email
-
-            element.add_element(contact_extensions)
-            element.add_element(contact_email)
-            element
+            cp
           end
       end
       # rubocop:enable Metrics/AbcSize

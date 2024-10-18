@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Spid::Saml2::SPMetadata do
+RSpec.describe Spid::Saml2::CieSPMetadata do
   subject(:sp_metadata) { described_class.new(settings:) }
 
   let(:settings) do
@@ -53,7 +53,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
       {
         "entityID" => "https://service.provider",
         "ID" => "_2b2ffddc5e96594af802f687a3bb8645",
-        "xmlns:spid" => "https://spid.gov.it/saml-extensions"
+        "xmlns:cie" => "https://www.cartaidentita.interno.gov.it/saml-extensions"
       }.each do |name, value|
         include_examples "has attribute", name, value
       end
@@ -182,7 +182,7 @@ RSpec.describe Spid::Saml2::SPMetadata do
         end
 
         {
-          "contactType" => "other"
+          "contactType" => "administrative"
         }.each do |name, value|
           include_examples "has attribute", name, value
         end

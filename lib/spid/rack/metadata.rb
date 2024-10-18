@@ -26,7 +26,11 @@ module Spid
         end
 
         def metadata
-          @metadata ||= ::Spid::Metadata.new
+          if request.path == Spid.configuration.metadata_path
+            @metadata ||= ::Spid::Metadata.new
+          elsif request.path == Spid.configuration.cie_metadata_path
+            @metadata ||= ::Spid::CieMetadata.new
+          end
         end
 
         def response
@@ -38,7 +42,8 @@ module Spid
         end
 
         def valid_request?
-          request.path == Spid.configuration.metadata_path
+          request.path == Spid.configuration.metadata_path ||
+            (Spid.configuration.cie_metadata_path && request.path == Spid.configuration.cie_metadata_path)
         end
       end
     end
